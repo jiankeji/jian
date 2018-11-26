@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.jian</groupId>
+		<artifactId>chongpet</artifactId>
+		<version>1.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<groupId>com.jian</groupId>
+	<artifactId>portal</artifactId>
+	<packaging>pom</packaging>
+	<name>ChongPet Portal</name>
+
+	<description>
+		ChongPet Portal Web Frameworks: JSF, Spring Boot, Struts 2 and Tapestry.
+	</description>
+
+	<modules>
+		<module>portal-clt</module>
+		<module>portal-reg</module>
+	</modules>
+
+	<properties><!---->
+		<core-redis.version>1.0</core-redis.version>
+		<core-es.version>1.0</core-es.version>
+		<core-model.version>1.0</core-model.version>
+		<core-server.version>1.0</core-server.version>
+	</properties>
+
+</project>

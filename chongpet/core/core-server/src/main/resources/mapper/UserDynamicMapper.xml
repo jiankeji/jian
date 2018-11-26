@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jian.core.server.dao.UserDynamicDao">
+	
+	<resultMap type="com.jian.core.model.bean.Dynamic" id="jiankeji">
+		<id column="userdmc_id" property="dynamicId" jdbcType="INTEGER"/>
+		<result column="userdmc_u_id" property="userId" jdbcType="INTEGER"/>
+		<result column="userdmc_content" property="content" jdbcType="VARCHAR"/>
+		<result column="u_name" property="name" jdbcType="VARCHAR"/>
+		<result column="u_photo" property="photo" jdbcType="VARCHAR"/>
+		<result column="userdmc_likenum" property="likenum" jdbcType="INTEGER"/>
+		<result column="userdmc_browse" property="browse" jdbcType="INTEGER"/>
+		<result column="userdmc_createTime" property="createTime" jdbcType="BIGINT"/>
+	</resultMap>
+	
+	<resultMap type="com.jian.core.model.bean.Comment" id="jiankeji2">
+		<id column="cmt_id" property="commentId" jdbcType="INTEGER"/>
+		<result column="cmt_userdmc_id" property="dynamicId" jdbcType="INTEGER"/>
+		<result column="cmt_u_id" property="toUserId" jdbcType="INTEGER"/>
+		<result column="cmtUserName" property="toUserName" jdbcType="VARCHAR"/>
+		<result column="cmtUserPhoto" property="toUserPhoto" jdbcType="VARCHAR"/>
+		<result column="cmt_u_ids" property="fromUserId" jdbcType="INTEGER"/>
+		<result column="cmtUserNames" property="fromUserName" jdbcType="VARCHAR"/>
+		<result column="cmtUserPhotos" property="fromUserPhoto" jdbcType="VARCHAR"/>
+		<result column="cmt_content" property="commentContent" jdbcType="VARCHAR"/>
+		<result column="cmt_time" property="commentTime" jdbcType="BIGINT"/>
+	</resultMap>
+	
+	<resultMap type="com.jian.core.model.bean.Reply" id="jiankeji3">
+		<id column="reply_id" property="replyId" jdbcType="INTEGER"/>
+		<result column="reply_cmt_id" property="commentId" jdbcType="INTEGER"/>
+		<result column="reply_u_id" property="toUserId" jdbcType="INTEGER"/>
+		<result column="replyUserName" property="toUserName" jdbcType="VARCHAR"/>
+		<result column="replyUserPhoto" property="toUserPhoto" jdbcType="VARCHAR"/>
+		<result column="reply_u_ids" property="fromUserId" jdbcType="INTEGER"/>
+		<result column="replyUserNames" property="fromUserName" jdbcType="VARCHAR"/>
+		<result column="replyUserPhotos" property="fromUserPhoto" jdbcType="VARCHAR"/>
+		<result column="reply_content" property="replyContent" jdbcType="VARCHAR"/>
+		<result column="reply_time" property="replyTime" jdbcType="BIGINT"/>
+	</resultMap>
+	
+	<resultMap type="com.jian.core.model.bean.Img" id="jiankeji4">
+		<id column="userdmcimg_id" property="imgId" jdbcType="INTEGER"/>
+		<result column="userdmcimg_userdmc_id" property="dynamicId" jdbcType="INTEGER"/>
+		<result column="userdmcimg_photo" property="photo" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="addDynamic" parameterType="com.jian.core.model.bean.Dynamic" useGeneratedKeys="true" keyProperty="dynamicId">
+		insert into userdynamic
+		(userdmc_u_id,userdmc_content,userdmc_likenum,userdmc_browse,userdmc_createTime)
+		values
+		(#{userId},#{content},#{likenum},#{browse},#{createTime})
+	</insert>
+	<insert id="addDynamicImg">
+		insert into userdynamicimg
+		(userdmcimg_userdmc_id,userdmcimg_photo)
+		values
+		(#{dynamicId},#{paths})
+	</insert>
+	
+	<select id="selectLikeStatus" resultType="java.lang.Integer">
+		select like_status 
+		from likenum
+		where like_u_id=#{userId}
+		AND like_userdmc_id = #{dynamicId}
+	</select>
+	
+	<insert id="addUserLike">
+		insert into likenum
+		(like_u_id,like_userdmc_id,like_status)
+		values
+		(#{userId},#{dynamicId},1)
+	</insert>
+	
+	<update id="updateLikeStatus">
+		update likenum
+		set like_status = #{status}
+		where like_u_id=#{userId}
+		AND like_userdmc_id = #{dynamicId}
+	</update>
+	
+	<update id="updateLikeNum">
+		update userdynamic
+		set userdmc_likenum = userdmc_likenum + #{number}
+		where userdmc_id = #{dynamicId}
+	</update>
+	
+	<select id="selectLikeNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select userdmc_likenum
+		from userdynamic
+		where userdmc_id = #{dynamicId}
+	</select>
+	
+	<select id="showDynamic" resultMap="jiankeji">
+		select umc.userdmc_id,umc.userdmc_u_id,umc.userdmc_content,umc.userdmc_likenum,umc.userdmc_browse,umc.userdmc_createTime,u.u_photo,u.u_name
+		from userdynamic umc,user u
+		where umc.userdmc_u_id=u.u_id
+		order by userdmc_createTime DESC
+	</select>
+	
+	<select id="selectCommentbyDMC" resultMap="jiankeji2" parameterType="java.lang.Integer">
+		select c.cmt_id,c.cmt_userdmc_id,c.cmt_u_id,c.cmt_u_ids,c.cmt_content,c.cmt_time,
+			u1.u_name cmtUserName,u1.u_photo cmtUserPhoto,u2.u_name cmtUserNames,u2.u_photo cmtUserPhotos
+		from comment c,user u1,user u2
+		where c.cmt_u_id = u1.u_id
+		AND c.cmt_u_ids = u2.u_id
+		AND cmt_userdmc_id = #{dynamicId}
+	</select>
+	
+	<select id="selectReplyByCMT" resultMap="jiankeji3" parameterType="java.lang.Integer">
+		select r.reply_id,r.reply_cmt_id,r.reply_u_id,r.reply_u_ids,r.reply_content,r.reply_time,
+			u1.u_name replyUserName,u1.u_photo replyUserPhoto,u2.u_name replyUserNames,u2.u_photo replyUserPhotos
+		from reply r,user u1,user u2
+		where r.reply_u_id= u1.u_id
+		AND r.reply_u_ids= u2.u_id
+		AND reply_cmt_id = #{commentId}
+	</select>
+	<select id="selectDMCIMGByDMC" resultMap="jiankeji4" parameterType="java.lang.Integer">
+		select userdmcimg_id,userdmcimg_userdmc_id,userdmcimg_photo
+		from userdynamicimg
+		where userdmcimg_userdmc_id = #{dynamicId}
+	</select>
+	
+	<insert id="comment" parameterType="com.jian.core.model.bean.Comment">
+		insert into comment
+		(cmt_userdmc_id,cmt_u_id,cmt_u_ids,cmt_content,cmt_time)
+		values
+		(#{dynamicId},#{toUserId},#{fromUserId},#{commentContent},#{commentTime})
+	</insert>
+	
+	<insert id="reply" parameterType="com.jian.core.model.bean.Reply">
+		insert into reply 
+		(reply_cmt_id,reply_u_id,reply_u_ids,reply_content,reply_time)
+		values
+		(#{commentId},#{toUserId},#{fromUserId},#{replyContent},#{replyTime})
+	</insert>
+	
+	<select id="selectReplyById" resultType="java.lang.Integer">
+		select reply_id
+		from reply
+		where reply_id=#{replyId}
+		AND reply_u_id=#{userId}
+		union all
+		select reply_id
+		from reply
+		where reply_id=#{replyId}
+		AND reply_u_ids=#{userId}
+	</select>
+	<delete id="deleteReply" parameterType="java.lang.Integer">
+		delete from reply
+		where reply_id=#{replyId}
+	</delete>
+	
+	<select id="selectCommentById" resultType="java.lang.Integer">
+		select cmt_id
+		from comment
+		where cmt_id=#{commentId}
+		AND cmt_u_id=#{userId}
+		union all
+		select cmt_id
+		from comment
+		where cmt_id=#{commentId}
+		AND cmt_u_ids=#{userId}
+	</select>
+	<delete id="deleteComment" parameterType="java.lang.Integer">
+		delete from comment
+		where cmt_id=#{commentId}
+	</delete>
+	
+	<select id="selectDynamicById" resultType="java.lang.Integer">
+		select userdmc_id
+		from userdynamic
+		where userdmc_id=#{dynamicId}
+		AND userdmc_u_id=#{userId}
+	</select>
+	
+	<delete id="deleteDynamicById"  parameterType="java.lang.Integer">
+		delete from userdynamic
+		where userdmc_id=#{dynamicId}
+	</delete>
+	<delete id="deleteImgById" parameterType="java.lang.Integer">
+		delete from userdynamicimg
+		where userdmcimg_id = #{imgId}
+	</delete>
+	<update id="browse" parameterType="java.lang.Integer">
+		update userdynamic
+		set userdmc_browse = userdmc_browse+1
+		where userdmc_id = #{dynamicId}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+

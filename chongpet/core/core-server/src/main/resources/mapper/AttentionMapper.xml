@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jian.core.server.dao.AttentionDao">
+	
+
+	<select id="selectattstatus1" parameterType="com.jian.core.model.bean.Attention" resultType="java.lang.Integer">
+		select useratt_status
+		from userattention
+		where useratt_u_id=#{userIda}
+		AND useratt_u_ids=#{userIdb}
+	</select>
+	
+	<select id="selectattstatus2" parameterType="com.jian.core.model.bean.Attention" resultType="java.lang.Integer">
+		select useratt_status
+		from userattention
+		where useratt_u_id=#{userIdb}
+		AND useratt_u_ids=#{userIda}
+	</select>
+	
+	<insert id="addAttention" parameterType="com.jian.core.model.bean.Attention">
+		insert into userattention
+		(useratt_u_id,useratt_u_ids,useratt_status)
+		values
+		(#{userIda},#{userIdb},#{status})
+	</insert>
+	
+	<update id="addAttention2" parameterType="com.jian.core.model.bean.Attention">
+		update 
+			userattention
+		set 
+			useratt_status=#{status}
+		where
+			useratt_u_id=#{userIda}
+		AND 
+			useratt_u_ids=#{userIdb}
+	</update>
+	
+	<update id="addAttention3" parameterType="com.jian.core.model.bean.Attention">
+		update 
+			userattention
+		set 
+			useratt_status=#{status}
+		where
+			useratt_u_id=#{userIdb}
+		AND 
+			useratt_u_ids=#{userIda}
+	</update>
+	
+	<delete id="cancelAttention1" parameterType="com.jian.core.model.bean.Attention">
+		delete from userattention
+		where
+			useratt_u_id=#{userIda}
+		AND 
+			useratt_u_ids=#{userIdb}
+	</delete>
+	
+	<delete id="cancelAttention2" parameterType="com.jian.core.model.bean.Attention">
+		delete from userattention
+		where
+			useratt_u_id=#{userIdb}
+		AND 
+			useratt_u_ids=#{userIda}
+	</delete>
+	
+	<update id="addfans" parameterType="java.lang.Integer">
+		update user
+		set u_fans=u_fans+1
+		where u_id=#{userId}
+	</update>
+	<update id="deletefans" parameterType="java.lang.Integer">
+		update user
+		set u_fans=u_fans-1
+		where u_id=#{userId}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jian.core.server.dao.LoginDao">
+	
+	<resultMap type="com.jian.core.model.bean.User" id="jian">
+		<id column="u_id" property="userId" jdbcType="INTEGER"/>
+		<result column="u_name" property="name" jdbcType="VARCHAR"/>
+		<result column="u_phoneNumber" property="phoneNumber" jdbcType="VARCHAR"/>
+		<result column="u_sex" property="sex" jdbcType="VARCHAR"/>
+		<result column="u_birthday" property="birthday" jdbcType="BIGINT"/>
+		<result column="u_city" property="city" jdbcType="VARCHAR"/>
+		<result column="u_explain" property="explain" jdbcType="VARCHAR"/>
+		<result column="u_photo" property="photo" jdbcType="VARCHAR"/>
+		<result column="u_updateTime" property="updateTime" jdbcType="BIGINT"/>
+		<result column="u_createTime" property="createTime" jdbcType="BIGINT"/>
+		<result column="u_fans" property="fans" jdbcType="INTEGER"/>
+	</resultMap>
+
+
+	<select id="isUserByPhone" parameterType="java.lang.String" resultType="java.lang.String">
+		select u_password
+		from user
+		where u_phoneNumber=#{phoneNumber}
+	</select>
+	
+	<select id="selectUserAllByPhone" parameterType="java.lang.String" resultMap="jian">
+		select u_id,u_name,u_phoneNumber,u_sex,u_birthday,u_city,u_explain,u_photo,u_updateTime,u_createTime,u_fans
+		from user
+		where u_phoneNumber=#{phoneNumber}
+	</select>
+	<update id="updateUserByPhone" parameterType="com.jian.core.model.bean.User">
+		update user
+		<set>
+			<if test="name!=null">
+				u_name=#{name},
+			</if>
+			<if test="phoneNumber!=null">
+				u_phoneNumber=#{phoneNumber},
+			</if>
+			<if test="password!=null">
+				u_password=#{password},
+			</if>
+			<if test="sex!=null">
+				u_sex=#{sex},
+			</if>
+			<if test="birthday!=null">
+				u_birthday=#{birthday},
+			</if>
+			<if test="city!=null">
+				u_city=#{city},
+			</if>
+			<if test="explain!=null">
+				u_explain=#{explain},
+			</if>
+			<if test="photo!=null">
+				u_photo=#{photo},
+			</if>
+			<if test="updateTime!=null">
+				u_updateTime=#{updateTime},
+			</if>
+			<if test="wxopenid!=null">
+				u_wxopenid=#{wxopenid},
+			</if>
+		</set>
+		where u_phoneNumber=#{phoneNumber}
+	</update>
+	
+	<select id="getdefaultphoto" parameterType="java.lang.Integer" resultType="java.lang.String">
+		select dp_photo
+		from defaultphoto
+		limit #{number},1
+	</select>
+	
+	<insert id="adduser" parameterType="com.jian.core.model.bean.User">
+		insert into user
+		(u_name,u_phoneNumber,u_password,u_sex,u_photo,u_updateTime,u_createTime,u_fans)
+		values
+		(#{name},#{phoneNumber},#{password},#{sex},#{photo},#{updateTime},#{createTime},#{fans})
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
