@@ -2,7 +2,7 @@ package com.jian.core.model.bean;
 
 public class Attention {
 
-	//关注id
+	//关注id   ;;;
 	private Integer attId;
 	//用户a的id
 	private Integer userIda;
