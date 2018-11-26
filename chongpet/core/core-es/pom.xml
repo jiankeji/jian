@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>com.jian.core</groupId>
 			<artifactId>core-model</artifactId>
-			<version>1.0</version>
+			<version>${core-model.version}</version>
 		</dependency>
 
 		<dependency>
@@ -57,5 +57,10 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.47</version>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
 	</dependencies>
 </project>

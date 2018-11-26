@@ -26,15 +26,21 @@ public final class ResC {
 
     /** 手机号已存在,请换其他手机号*/
     public static final int API_PHONE_EXIT = 600008;
+    /**参数格式不正确，参数为空之类的*/
+    public static final int API_PARAMS_FORMAT_ERROR=600009;
 
     public static final int API_ERROR_LOGIN_USER=600101;//用户未登录
 
     public static final int API_ERROR_USER_NULL=600102;//用户不存在
+
+    public static final int API_ERROR_USER_NOTNULL=600103;//用户不存在
 
     public static final int API_ERROR_FOLLOW_USER=600201;//自己不能关注/取消关注自己
 
     public static final int API_ERROE_FOLLOWING= 600202;//已经关注
 
     public static final int API_FOLLOWED_USER = 600203;//用户关注/取消关注操作失败
+
+    public static final int API_SEND_VERITY_ERROR = 600301;//发送验证码失败
 
 }

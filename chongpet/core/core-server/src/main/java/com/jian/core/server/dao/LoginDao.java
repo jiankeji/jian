@@ -1,6 +1,7 @@
 package com.jian.core.server.dao;
 
 import com.jian.core.model.bean.User;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 /**

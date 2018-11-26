@@ -14,7 +14,7 @@ public class ResultUtil {
     }
 
 
-	public static @SuppressWarnings("rawtypes") ResultVo setResultVoDesc(ResultVo resultVo,int code,Exception e){
+	public static  ResultVo setResultVoDesc(ResultVo resultVo,int code,Exception e){
 		resultVo.setCode(code);
 		String exMsg = "";
 		if(e!=null)exMsg = e.getMessage();
@@ -42,16 +42,31 @@ public class ResultUtil {
 				break;
 			case ResC.API_PHONE_EXIT:
 				resultVo.setDesc("手机号已存在,请换其他手机号");
+				break;
 			case ResC.API_ERROR_LOGIN_USER:
 			    resultVo.setDesc("用户未登录");
+				break;
             case ResC.API_ERROR_USER_NULL:
                 resultVo.setDesc("用户不存在");
+				break;
             case ResC.API_ERROR_FOLLOW_USER:
                 resultVo.setDesc("自己不能关注/取消关注自己");
+				break;
             case ResC.API_ERROE_FOLLOWING:
                 resultVo.setDesc("已经关注");
+				break;
             case ResC.API_FOLLOWED_USER:
-                resultVo.setDesc("用户关注/取消关注操作失败");
+            	resultVo.setDesc("用户关注/取消关注操作失败");
+				break;
+			case ResC.API_PARAMS_FORMAT_ERROR:
+				resultVo.setDesc("参数格式不正确,请重新输入");//有可能输入的为空
+				break;
+			case ResC.API_SEND_VERITY_ERROR:
+				resultVo.setDesc("验证码发送失败");//有可能输入的为空
+				break;
+			case ResC.API_ERROR_USER_NOTNULL:
+				resultVo.setDesc("用户已经存在");
+				break;
 			default:
 		}
 		return resultVo;

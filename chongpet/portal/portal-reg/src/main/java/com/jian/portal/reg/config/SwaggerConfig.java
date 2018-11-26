@@ -23,8 +23,7 @@ public class SwaggerConfig {
                 //为当前包路径
                 .apis(RequestHandlerSelectors.basePackage("com.jian.portal.reg.controller"))
                 .paths(PathSelectors.any())
-                .build()
-                ;
+                .build();
     }
 
     //构建 api文档的详细信息函数

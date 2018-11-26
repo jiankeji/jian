@@ -67,17 +67,6 @@
             <artifactId>spring-boot-starter-jetty</artifactId>
         </dependency-->
 
-		<dependency>
-			<groupId>com.inacg.etaster.core</groupId>
-			<artifactId>core-redis</artifactId>
-			<version>${core-redis.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.inacg.etaster.core</groupId>
-			<artifactId>core-es</artifactId>
-			<version>${core-es.version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>com.jian.core</groupId>

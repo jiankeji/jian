@@ -21,6 +21,7 @@ import static com.jian.core.model.ResC.*;
  * @author shen
  *
  */
+@SuppressWarnings("ALL")
 @Api(value ="api1/attention",description = "用户关注 取关")
 @RequestMapping(value="api1/attention")
 @RestController

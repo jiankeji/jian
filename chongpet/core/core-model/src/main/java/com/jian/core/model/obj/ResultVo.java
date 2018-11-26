@@ -12,16 +12,16 @@ import io.swagger.annotations.ApiModelProperty;
  * @version 1.0.0
  */
 @ApiModel(value="返回前端的结果信息代码和描述以及数据")
-public class ResultVo<T> {
-	public ResultVo(T obj){
-		this.obj=obj;
-	}
+	public class ResultVo<T> {
+		public ResultVo(T obj){
+			this.obj=obj;
+		}
 
-	@ApiModelProperty(value="返回信息代码,1 成功;2 其他失败", dataType="int" ,required=true)
-	private int code = 0;
+		@ApiModelProperty(value="返回信息代码,1 成功;2 其他失败", dataType="int" ,required=true)
+		private int code = 0;
 
-	@ApiModelProperty(value="返回信息描述", dataType="String",required=true)
-	private String desc = "";
+		@ApiModelProperty(value="返回信息描述", dataType="String",required=true)
+		private String desc = "";
 
 	@ApiModelProperty(value="返回的结果对象,Integer,String,List...", dataType="Object",required=false)
 	private T obj;

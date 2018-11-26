@@ -5,6 +5,7 @@ import com.jian.core.model.util.Mdfive;
 import com.jian.core.model.util.MyRandom;
 import com.jian.core.redis.util.RedisUtil;
 import com.jian.core.server.dao.LoginDao;
+import com.jian.core.server.redisDao.UserRedisDao;
 import com.jian.core.server.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import javax.annotation.Resource;
  * @author shen
  *
  */
+@SuppressWarnings("ALL")
 @Service
 @Transactional
 public class LoginServiceImpl implements LoginService {
@@ -26,6 +28,9 @@ public class LoginServiceImpl implements LoginService {
 	private LoginDao loginDao;
 
 	@Autowired
+	private UserRedisDao redisDao;
+
+	@Resource
 	private RedisUtil redisUtil;
 
 	//判断新老用户
@@ -104,8 +109,13 @@ public class LoginServiceImpl implements LoginService {
 		loginDao.adduser(user);
 		return 0;
 	}
-	
-	
+
+	@Override
+	public void redisUser(String userId) {
+		redisDao.saveReidsUser(userId);
+	}
+
+
 }
 
 

@@ -1,183 +1,197 @@
 package com.jian.portal.reg.controller;
 
 import com.jian.core.model.bean.User;
-import com.jian.core.model.util.JsonResult;
-import com.jian.core.model.util.Mdfive;
-import com.jian.core.model.util.MyRandom;
-import com.jian.core.model.util.SDK;
+import com.jian.core.model.obj.ResultVo;
+import com.jian.core.model.util.*;
 import com.jian.core.server.service.LoginService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.jian.core.model.ResC.*;
 
 /**
  * 登录注册controller
  * @author shen
  *
  */
+@SuppressWarnings("ALL")
+@Api(value ="api1/login",description = "登录 注册")
 @RestController
-@RequestMapping(value="/login")
+@RequestMapping(value="api1/login")
 public class LoginController {
-	
-	@Resource
+
+	@Autowired
 	private LoginService loginService;
-	
+
 	/**
 	 * 根据手机号判断新老用户
 	 * @param phoneNumber 手机号
 	 * @return
 	 */
-	@RequestMapping(value="/judge",method= RequestMethod.POST)
-	public JsonResult judgePhone(@RequestParam String phoneNumber) {
-		
+	@PostMapping(value="/judge",produces="application/json; charset=UTF-8")
+	@ApiOperation(value="判断新老用户", notes="判断新老用户", response= ResultVo.class,position=1)
+	@ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
+			@ApiResponse(code=API_PHONE_NUM_ERROR,message="手机号错误(位数不够、格式不对)"),
+			@ApiResponse(code=API_PHONE_EXIT,message="手机号已存在,请换其他手机号")})
+	@ApiImplicitParam(paramType = "query",name = "phoneNumber",value = "手机号",dataType = "String",required = true)
+	public ResultVo<String> judgePhone(@RequestParam String phoneNumber) {
+		ResultVo<String> result = new ResultVo<>("");
 		if (phoneNumber.length()!=11) {
-			JsonResult result = new JsonResult();
-			result.setCode(201);
-			result.setMessage("手机号输入错误");
-			return result;
+			return ResultUtil.setResultVoDesc(result,API_PHONE_NUM_ERROR);
 		}
 		String isUser = loginService.isUserByPhone(phoneNumber);
-		Map<String, Object> map = new HashMap<>();
-		JsonResult result = new JsonResult(map);
-		map.put("isUser", isUser);
-		return result;
+		if("true".equals(isUser)){
+			return ResultUtil.setResultVoDesc(result,API_PHONE_EXIT);
+		}
+		return ResultUtil.setResultVoDesc(result,API_SUCCESS);
 	}
-	
+
 	/**
 	 * 密码登录
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping(value="/password",method= RequestMethod.POST)
-	public JsonResult loginByPwd(HttpServletRequest request, User user) {
-		JsonResult result = new JsonResult();
+	@PostMapping(value="/password",produces="application/json; charset=UTF-8")
+	@ApiOperation(value="密码登录", notes="密码登录", response= ResultVo.class,position=1)
+	@ApiResponses({
+			@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
+			@ApiResponse(code=API_PARAMS_ERROR,message="参数错误，请确认在输入"),
+			@ApiResponse(code=API_ERROR_USER_NULL,message="用户不存在"),
+			@ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入")})
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query",name = "phoneNumber",value = "手机号",dataType = "String",required = true),
+			@ApiImplicitParam(paramType = "query",name = "password",value = "密码",dataType = "String",required = true)
+	})
+	public ResultVo<Map<String,String>> loginByPwd(HttpServletRequest request, String phoneNumber,String password) {
+		User user = new User();
+		user.setPassword(password);
+		user.setPhoneNumber(phoneNumber);
+		Map<String,String> map = new HashMap<>();
+		ResultVo<Map<String,String>> result = new ResultVo<>(map);
 		if(user.getPhoneNumber().length()==11) {
 			String isUser = loginService.isUserByPhone(user.getPhoneNumber());
 			if("false".equals(isUser)) {
-				result.setCode(201);
-				result.setMessage("用户不存在");
-				return result;
+				return ResultUtil.setResultVoDesc(result,API_ERROR_USER_NULL);
 			}
 		}
 		int s = loginService.loginByPwd(user);
 		if(s==201) {
-			result.setCode(202);
-			result.setMessage("手机号输入错误");
-			return result;
+			return ResultUtil.setResultVoDesc(result,API_PARAMS_FORMAT_ERROR);
 		}
 		if(s==202) {
-			result.setCode(203);
-			result.setMessage("密码输入错误");
-			return result;
+			return ResultUtil.setResultVoDesc(result,API_PARAMS_FORMAT_ERROR);
 		}
 		if(s==204) {
-			result.setCode(204);
-			result.setMessage("密码不正确");
-			return result;
+			return ResultUtil.setResultVoDesc(result,API_PARAMS_ERROR);
 		}
 		String token = Mdfive.randomMd5();
 		User u = loginService.selectUserAllByPhone(user.getPhoneNumber());
 		request.getSession().setAttribute("phoneNumber", user.getPhoneNumber());
 		request.getSession().setAttribute("userId", u.getUserId());
 		request.getSession().setAttribute("token", token);
-		Map<String,Object> map = new HashMap<>();
-		map.put("user", u);
+
+		loginService.redisUser(u.getUserId()+"");
+
+		map.put("user", u.getUserId()+"");
 		map.put("token", token);
-		result.setData(map);
-		result.setMessage("登录成功");
-		return result;
+		return ResultUtil.setResultVoDesc(result,API_SUCCESS);
 	}
-	
+
 	/**
 	 * 发送手机验证码
 	 * @param request
 	 * @param phoneNumber  手机号
 	 * @return
 	 */
-	@RequestMapping(value="/sendVerity",method= RequestMethod.POST)
-	public JsonResult verity(HttpServletRequest request, @RequestParam String phoneNumber) {
-		JsonResult result = new JsonResult();
+	@PostMapping(value="/sendVerity",produces="application/json; charset=UTF-8")
+	@ApiOperation(value="发送手机验证码", notes="发送手机验证码", response= ResultVo.class,position=1)
+	@ApiResponses({
+			@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
+			@ApiResponse(code=API_PHONE_NUM_ERROR,message="手机号错误(位数不够、格式不对)"),
+			@ApiResponse(code=API_SEND_VERITY_ERROR,message="验证码发送失败")})
+	@ApiImplicitParam(paramType = "query",name = "phoneNumber",value = "手机号",dataType = "String",required = true)
+	public ResultVo<Integer> verity(HttpServletRequest request, @RequestParam String phoneNumber) {
+		ResultVo<Integer> result = new ResultVo<>(-1);
 		if(phoneNumber.trim().length()!=11){
-			result.setCode(201);
-			result.setMessage("手机号不正确");
-			return result;
+			return ResultUtil.setResultVoDesc(result,API_PHONE_NUM_ERROR);
 		}
 		String random = MyRandom.getCode();
 		if(random == null || random.length()==0){
-			result.setCode(202);
-			result.setMessage("无效的验证码");
-			return result;
+			return ResultUtil.setResultVoDesc(result,API_SEND_VERITY_ERROR);
 		}
 		try {
 			SDK.sdk(phoneNumber, random);
 		} catch (Exception e) {
-			result.setCode(203);
-			result.setMessage("验证码发送失败");
-			return result;
+			return ResultUtil.setResultVoDesc(result,API_SEND_VERITY_ERROR);
 		}
 		request.getSession().setAttribute("phoneNumber", phoneNumber);
 		request.getSession().setAttribute("code", random);
 		request.getSession().setAttribute("time", System.currentTimeMillis()+"");
-		result.setCode(200);
-		result.setMessage("验证码发送成功");
-		return result;
-	}
-	
+
+		return ResultUtil.setResultVoDesc(result,API_SUCCESS);
+}
+
 	/**
 	 * 判断发送验证码是否正确
 	 * @param request
 	 * @param code
 	 * @return
 	 */
-	@RequestMapping(value="/isVerity",method= RequestMethod.POST )
-	public JsonResult isVerity(HttpServletRequest request, @RequestParam String code) {
+	@PostMapping(value="/isVerity",produces="application/json; charset=UTF-8")
+	@ApiOperation(value="判断发送验证码是否正确", notes="判断发送验证码是否正确", response= ResultVo.class,position=1)
+	@ApiResponses({
+			@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
+			@ApiResponse(code=API_PARAMS_ERROR,message="参数错误，请确认在输入"),
+			@ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入")})
+	@ApiImplicitParam(paramType = "query",name = "phoneNumber",value = "手机号",dataType = "String",required = true)
+	public ResultVo<Integer> isVerity(HttpServletRequest request, @RequestParam String code) {
+		ResultVo<Integer> result = new ResultVo<>(-1);
 		String codes = (String) request.getSession().getAttribute("code");
-		JsonResult result = new JsonResult();
 		if(code.trim().length()!=4) {
-			result.setCode(201);
-			result.setMessage("验证码为空或者不是4位");
-			return result;
+			return ResultUtil.setResultVoDesc(result,API_PARAMS_FORMAT_ERROR);
 		}
 		if(!code.equals(codes)) {
-			result.setCode(202);
-			result.setMessage("验证码不一致");
-			return result;
+			return ResultUtil.setResultVoDesc(result,API_PARAMS_ERROR);
 		}
-		result.setCode(200);
-		result.setMessage("验证成功");
-		return result;
+		return ResultUtil.setResultVoDesc(result,API_SUCCESS);
 	}
-	
+
 	/**
 	 * 注册
 	 * @param request
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping(value="/register",method= RequestMethod.POST)
-	public JsonResult register(HttpServletRequest request, User user) {
-		JsonResult result = new JsonResult();
+	@PostMapping(value="/register",produces="application/json; charset=UTF-8")
+	@ApiOperation(value="注册", notes="注册", response= ResultVo.class,position=1)
+	@ApiResponses({
+			@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
+			@ApiResponse(code=API_ERROR_USER_NOTNULL,message="用户已经存在"),
+			@ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入")})
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query",name = "phoneNumber",value = "手机号",dataType = "String",required = true),
+			@ApiImplicitParam(paramType = "query",name = "password",value = "密码",dataType = "String",required = true)
+	})
+	public ResultVo<Map<String,String>> register(HttpServletRequest request, String phoneNumber,String password) {
+		User user = new User();
+		user.setPhoneNumber(phoneNumber);
+		user.setPassword(password);
+		Map<String,String> map = new HashMap<>();
+		ResultVo<Map<String,String>> result = new ResultVo<>(map);
 		if(user.getPassword()==null || user.getPassword().trim().length()==0) {
-			result.setCode(201);
-			result.setMessage("密码为空");
-			return result;
+			return ResultUtil.setResultVoDesc(result,API_PARAMS_FORMAT_ERROR);
 		}
 		if(user.getPhoneNumber().trim().length()!=11){
-			result.setCode(202);
-			result.setMessage("手机号不正确");
-			return result;
+			return ResultUtil.setResultVoDesc(result,API_PARAMS_FORMAT_ERROR);
 		}
 		String isUser = loginService.isUserByPhone(user.getPhoneNumber());
 		if("true".equals(isUser)) {
-			result.setCode(203);
-			result.setMessage("该手机号已注册");
-			return result;
+			return ResultUtil.setResultVoDesc(result,API_ERROR_USER_NOTNULL);
 		}
 		loginService.register(user);
 		String token = Mdfive.randomMd5();
@@ -185,13 +199,11 @@ public class LoginController {
 		request.getSession().setAttribute("phoneNumber", user.getPhoneNumber());
 		request.getSession().setAttribute("userId", u.getUserId());
 		request.getSession().setAttribute("token", token);
-		Map<String,Object> map = new HashMap<>();
-		map.put("user", u);
+
+		map.put("userId", u.getUserId()+"");
 		map.put("token", token);
-		result.setCode(200);
-		result.setMessage("注册成功");
-		result.setData(map);
-		return result;
+
+		return ResultUtil.setResultVoDesc(result,API_SUCCESS);
 	}
 }
 

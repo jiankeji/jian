@@ -18,4 +18,6 @@ public interface LoginService {
 	User selectUserAllByPhone(String phoneNumber);
 	//注册
 	int register(User user);
+
+	void redisUser(String userId);
 }
