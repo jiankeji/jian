@@ -1,4 +1,4 @@
-package com.jian.portal.reg;
+package com.jian.portal.es;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages = {"com.jian.core","com.jian.portal"})
 @EnableJms
 @EnableTransactionManagement
-public class PortalRegApplication {
+public class EsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PortalRegApplication.class, args);
+		SpringApplication.run(EsApplication.class, args);
 	}
 }

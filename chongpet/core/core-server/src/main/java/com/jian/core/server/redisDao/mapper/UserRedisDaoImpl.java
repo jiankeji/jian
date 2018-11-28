@@ -1,4 +1,4 @@
-package com.jian.core.server.redisDao.daoImpl;
+package com.jian.core.server.redisDao.mapper;
 
 
 import com.jian.core.redis.util.RedisUtil;

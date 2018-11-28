@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -20,6 +21,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @MapperScan(basePackages = {"com.jian.core.server.dao"})//注释用它,XML文件配YML
 @ComponentScan(basePackages = {"com.jian.core","com.jian.portal"})
 @EnableJms
+@EnableTransactionManagement
 public class PortalCltApplication {
 
 	public static void main(String[] args) {

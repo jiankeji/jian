@@ -22,6 +22,7 @@
 	<modules>
 		<module>portal-clt</module>
 		<module>portal-reg</module>
+		<module>portal-es</module>
 	</modules>
 
 	<properties><!---->
