@@ -67,7 +67,7 @@ public class LoginController {
 			@ApiImplicitParam(paramType = "query",name = "phoneNumber",value = "手机号",dataType = "String",required = true),
 			@ApiImplicitParam(paramType = "query",name = "password",value = "密码",dataType = "String",required = true)
 	})
-	public ResultVo<Map<String,String>> loginByPwd(HttpServletRequest request, String phoneNumber,String password) {
+	public ResultVo<Map<String,String>> loginByPwd(HttpServletRequest request,@RequestParam  String phoneNumber,@RequestParam String password) {
 		User user = new User();
 		user.setPassword(password);
 		user.setPhoneNumber(phoneNumber);
@@ -89,15 +89,15 @@ public class LoginController {
 		if(s==204) {
 			return ResultUtil.setResultVoDesc(result,API_PARAMS_ERROR);
 		}
-		String token = Mdfive.randomMd5();
-		User u = loginService.selectUserAllByPhone(user.getPhoneNumber());
-		request.getSession().setAttribute("phoneNumber", user.getPhoneNumber());
-		request.getSession().setAttribute("userId", u.getUserId());
-		request.getSession().setAttribute("token", token);
 
-		loginService.redisUser(u.getUserId()+"");
+		User u= loginService.selectUserAllByPhone(user.getPhoneNumber());
+		String token = Mdfive.randomMd5(u.getUserId());
 
-		map.put("user", u.getUserId()+"");
+		if(u.getUserId()==-1)return ResultUtil.setResultVoDesc(result,API_ERROR_USER_NULL);
+
+		loginService.redisUser(u,token);
+
+		map.put("userId", u.getUserId()+"");
 		map.put("token", token);
 		return ResultUtil.setResultVoDesc(result,API_SUCCESS);
 	}
@@ -175,12 +175,18 @@ public class LoginController {
 			@ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入")})
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query",name = "phoneNumber",value = "手机号",dataType = "String",required = true),
-			@ApiImplicitParam(paramType = "query",name = "password",value = "密码",dataType = "String",required = true)
+			@ApiImplicitParam(paramType = "query",name = "password",value = "密码",dataType = "String",required = true),
+			@ApiImplicitParam(paramType = "query",name = "phoneType",value = "手机类型 o ios  1安卓",dataType = "int",required = true),
+			@ApiImplicitParam(paramType = "query",name = "loginType",value = "登录类型 0手机号注册  1第三方登录注册",dataType = "int",required = true),
+			@ApiImplicitParam(paramType = "query",name = "userId",value = "用户id 登录类型为1 则需要",dataType = "int",required = false)
 	})
-	public ResultVo<Map<String,String>> register(HttpServletRequest request, String phoneNumber,String password) {
+	public ResultVo<Map<String,String>> register(HttpServletRequest request,@RequestParam  String phoneNumber,
+												 @RequestParam String password,@RequestParam Integer phoneType,
+												 @RequestParam Integer loginType,@RequestParam Integer userId) {
 		User user = new User();
 		user.setPhoneNumber(phoneNumber);
 		user.setPassword(password);
+		user.setPhoneType(phoneType);
 		Map<String,String> map = new HashMap<>();
 		ResultVo<Map<String,String>> result = new ResultVo<>(map);
 		if(user.getPassword()==null || user.getPassword().trim().length()==0) {
@@ -193,12 +199,21 @@ public class LoginController {
 		if("true".equals(isUser)) {
 			return ResultUtil.setResultVoDesc(result,API_ERROR_USER_NOTNULL);
 		}
-		loginService.register(user);
-		String token = Mdfive.randomMd5();
+
+		if(loginType==1){
+			if(userId==null){
+				return ResultUtil.setResultVoDesc(result,API_PARAMS_FORMAT_ERROR);
+			}
+		}
+
+		loginService.register(user,loginType);
+
+
 		User u = loginService.selectUserAllByPhone(user.getPhoneNumber());
-		request.getSession().setAttribute("phoneNumber", user.getPhoneNumber());
-		request.getSession().setAttribute("userId", u.getUserId());
-		request.getSession().setAttribute("token", token);
+		String token = Mdfive.randomMd5(u.getUserId());
+
+		if(u.getUserId()==-1)return ResultUtil.setResultVoDesc(result,API_ERROR_USER_NULL);
+		loginService.redisUser(u,token);
 
 		map.put("userId", u.getUserId()+"");
 		map.put("token", token);

@@ -1,4 +1,4 @@
-package com.jian.core.model.token;
+package com.jian.portal.reg.token;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

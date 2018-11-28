@@ -1,7 +1,8 @@
 package com.jian.core.model.bean;
 
 public class User {
-	
+
+
 	//用户id
 	private Integer userId;
 	//用户昵称
@@ -26,10 +27,64 @@ public class User {
 	private Long createTime;
 	//用户微信openid
 	private String  wxopenid;
+	//用户支付宝id
+	private String  payid;
+	//用户qq id
+	private String  qqid;
 	//用户粉丝数
 	private Integer fans;
-	
-	
+	//用户是否可用 0可用 1不可用
+	private Integer usable;
+	//用户状态 0可用 1不可用
+	private Integer status;
+	//推送
+	private  String push;
+	//手机类型 0 ios  1安卓
+	private  Integer phoneType;
+
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public String getPush() {
+		return push;
+	}
+
+	public void setPush(String push) {
+		this.push = push;
+	}
+
+	public Integer getPhoneType() {
+		return phoneType;
+	}
+
+	public void setPhoneType(Integer phoneType) {
+		this.phoneType = phoneType;
+	}
+
+	public String getPayid() {
+		return payid;
+	}
+	public void setPayid(String payid) {
+		this.payid = payid;
+	}
+	public String getQqid() {
+		return qqid;
+	}
+	public void setQqid(String qqid) {
+		this.qqid = qqid;
+	}
+	public Integer getUsable() {
+		return usable;
+	}
+	public void setUsable(Integer usable) {
+		this.usable = usable;
+	}
 	public Integer getFans() {
 		return fans;
 	}
@@ -48,7 +103,7 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -109,8 +164,8 @@ public class User {
 	public void setWxopenid(String wxopenid) {
 		this.wxopenid = wxopenid;
 	}
-	
-	
+
+
 }
 
 

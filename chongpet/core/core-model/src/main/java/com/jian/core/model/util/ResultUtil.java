@@ -67,6 +67,18 @@ public class ResultUtil {
 			case ResC.API_ERROR_USER_NOTNULL:
 				resultVo.setDesc("用户已经存在");
 				break;
+			case ResC.API_TOKEN_NOTNULL:
+				resultVo.setDesc("token为空");
+				break;
+			case ResC.API_TOKEN_ERROR:
+				resultVo.setDesc("Token认证失败");
+				break;
+			case ResC.API_RESTART:
+				resultVo.setDesc("请重新请求");
+				break;
+			case ResC.API_USER_NOT_POWER:
+				resultVo.setDesc("用户没有权限");
+				break;
 			default:
 		}
 		return resultVo;

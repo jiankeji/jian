@@ -14,6 +14,14 @@
 		<result column="u_updateTime" property="updateTime" jdbcType="BIGINT"/>
 		<result column="u_createTime" property="createTime" jdbcType="BIGINT"/>
 		<result column="u_fans" property="fans" jdbcType="INTEGER"/>
+
+        <result column="u_status" property="status" jdbcType="INTEGER"/>
+        <result column="u_usable" property="usable" jdbcType="INTEGER"/>
+        <result column="u_phoneType" property="phoneType" jdbcType="INTEGER"/>
+        <result column="u_payid" property="payid" jdbcType="VARCHAR"/>
+        <result column="u_qqid" property="qqid" jdbcType="VARCHAR"/>
+        <result column="u_owxopenid" property="owxopenid" jdbcType="VARCHAR"/>
+        <result column="u_push" property="push" jdbcType="VARCHAR"/>
 	</resultMap>
 
 
@@ -24,7 +32,8 @@
 	</select>
 	
 	<select id="selectUserAllByPhone" parameterType="java.lang.String" resultMap="jian">
-		select u_id,u_name,u_phoneNumber,u_sex,u_birthday,u_city,u_explain,u_photo,u_updateTime,u_createTime,u_fans
+		select u_id,u_name,u_phoneNumber,u_sex,u_birthday,u_city,u_explain,u_photo,u_updateTime,u_createTime,u_fans,
+		      u_wxopenid,u_payid,u_qqid,u_push,u_status,u_phoneType,u_usable
 		from user
 		where u_phoneNumber=#{phoneNumber}
 	</select>
@@ -77,6 +86,62 @@
 		values
 		(#{name},#{phoneNumber},#{password},#{sex},#{photo},#{updateTime},#{createTime},#{fans})
 	</insert>
+
+	<update id="updateUserById" parameterType="com.jian.core.model.bean.User">
+		update user
+		<set>
+			<if test="name!=null">
+				u_name=#{name},
+			</if>
+			<if test="phoneNumber!=null">
+				u_phoneNumber=#{phoneNumber},
+			</if>
+			<if test="password!=null">
+				u_password=#{password},
+			</if>
+			<if test="sex!=null">
+				u_sex=#{sex},
+			</if>
+			<if test="birthday!=null">
+				u_birthday=#{birthday},
+			</if>
+			<if test="city!=null">
+				u_city=#{city},
+			</if>
+			<if test="explain!=null">
+				u_explain=#{explain},
+			</if>
+			<if test="photo!=null">
+				u_photo=#{photo},
+			</if>
+			<if test="updateTime!=null">
+				u_updateTime=#{updateTime},
+			</if>
+			<if test="wxopenid!=null">
+				u_wxopenid=#{wxopenid},
+			</if>
+			<if test="payid!=null">
+				u_payid=#{payid},
+			</if>
+			<if test="qqid!=null">
+				u_qqid=#{qqid},
+			</if>
+			<if test="push!=null">
+				u_push=#{push},
+			</if>
+			<if test="status!=null">
+				u_status=#{status},
+			</if>
+			<if test="phoneType!=null">
+				u_phoneType=#{phoneType},
+			</if>
+			<if test="usable!=null">
+				u_usable=#{usable},
+			</if>
+		</set>
+		where u_id=#{userId}
+	</update>
+
 </mapper>
 
 

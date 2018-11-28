@@ -13,12 +13,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+
 @SuppressWarnings("ALL")
 @Component
-public  class RedisUtil {
-    private  static Log log = LogFactory.getLog ( RedisUtil.class );
+public  class RedisUtil1 {
+    private  static Log log = LogFactory.getLog ( RedisUtil1.class );
 
-    @Resource(name = "redisTemplate0")
+    @Resource(name = "redisTemplate1")
     public RedisTemplate redisTemplate;
 
     /**

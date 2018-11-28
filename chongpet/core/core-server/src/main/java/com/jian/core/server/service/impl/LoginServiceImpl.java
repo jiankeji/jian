@@ -33,6 +33,8 @@ public class LoginServiceImpl implements LoginService {
 	@Resource
 	private RedisUtil redisUtil;
 
+
+
 	//判断新老用户
 	@Override
 	public String isUserByPhone(String phoneNumber) {
@@ -68,51 +70,60 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public User selectUserAllByPhone(String phoneNumber) {
-		User user; 
-				
+	public User selectUserAllByPhone(String phoneNumber){
+		User user;
 		try {
 			user = loginDao.selectUserAllByPhone(phoneNumber);
-			user.setWxopenid("");
-			user.setPassword("");
-			
-			if (user.getBirthday()==null) {
-				user.setBirthday(0L);
-			}
-			if (user.getCity()==null) {
-				user.setCity("");
-			}
-			if (user.getExplain()==null) {
-				user.setExplain("");
-			}
-			
+
+			if (user.getWxopenid()==null)user.setWxopenid("");
+			if (user.getBirthday()==null) user.setBirthday(0L);
+			if (user.getCity()==null)user.setCity("");
+			if (user.getExplain()==null) user.setExplain("");
+			if (user.getPayid()==null) user.setPayid("");
+			if (user.getQqid()==null) user.setQqid("");
+			if (user.getPush()==null) user.setPush("");
+			if (user.getPhoneType()==null)user.setPhoneType(0);
 		} catch (Exception e) {
-			user=new User();
+			user = new User();
 			user.setUserId(-1);
 		}
 		return user;
 	}
 
 	@Override
-	public int register(User user) {
+	public int register(User user,Integer loginType) {
 		String phoneNumber = user.getPhoneNumber();
-		String name = "user"+ phoneNumber.substring(phoneNumber.length()-4, phoneNumber.length());
 		String pwd = Mdfive.md(user.getPassword());
+		if(loginType==1){
+			loginDao.updateUserById(user);
+			return 0;
+		}
+
+		String name = "user"+ phoneNumber.substring(phoneNumber.length()-4, phoneNumber.length());
 		user.setPassword(pwd);
-		user.setName(name);
 		user.setSex("female");
 		user.setCreateTime(System.currentTimeMillis());
 		user.setUpdateTime(System.currentTimeMillis());
 		String photo = loginDao.getdefaultphoto(MyRandom.getRandom());
-		user.setPhoto(photo);
 		user.setFans(0);
+		user.setStatus(0);
+		user.setUsable(0);
+		user.setName(name);
+		user.setPhoto(photo);
+
 		loginDao.adduser(user);
 		return 0;
 	}
 
 	@Override
-	public void redisUser(String userId) {
-		redisDao.saveReidsUser(userId);
+	public void redisUser(User user,String token) {
+		redisDao.saveReidsUser(user,token);
+	}
+
+	@Override
+	public Integer getUserIdRedis(String token) {
+		Integer userId = redisDao.getUserId(token);
+		return userId;
 	}
 
 

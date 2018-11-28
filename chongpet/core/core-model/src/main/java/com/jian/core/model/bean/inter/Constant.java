@@ -14,4 +14,8 @@ public interface Constant {
     /**reids首页排序排序路径*/
     final static String REDIS_HOME_INSURANCE_ZSET_KEY="home_insurance_zset_key";
 
+    /**redis用户动态目录*/
+    final static String REDIS_HOME_DYNAMIC="userDynanic:";
+    /**redis 用户动态点赞目录*/
+    final static String REDIS_HOME_DYNAMIC_LIKE="userDynanicLike:";
 }
