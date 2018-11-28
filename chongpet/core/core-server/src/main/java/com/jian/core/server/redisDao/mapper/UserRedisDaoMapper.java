@@ -30,4 +30,11 @@ public class UserRedisDaoMapper implements UserRedisDao {
         }
         return userId;
     }
+
+    @Override
+    public User gerUserRedis(Integer userId) {
+        String data = redisUtil.getHashValue("usermap",userId+"");
+        User user = JSON.parseObject(data,User.class);
+        return user;
+    }
 }

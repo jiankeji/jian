@@ -12,4 +12,6 @@ public interface UserRedisDao {
     //查出userId 根据token
     Integer getUserId(String token);
 
+    //根据id查出用户信息
+    User gerUserRedis(Integer userId);
 }

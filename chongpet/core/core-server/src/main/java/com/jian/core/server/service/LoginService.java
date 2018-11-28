@@ -22,6 +22,9 @@ public interface LoginService {
 	//将用户信息存到redis0
 	void redisUser(User user,String token);
 
+	//根据id查出用户信息
+	User getUserRedis(Integer userId);
+
 	//根据token获取用户id
 	Integer getUserIdRedis(String token);
 }

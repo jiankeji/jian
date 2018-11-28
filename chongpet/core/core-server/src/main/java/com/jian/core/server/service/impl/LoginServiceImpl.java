@@ -121,6 +121,11 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
+	public User getUserRedis(Integer userId) {
+		return redisDao.gerUserRedis(userId);
+	}
+
+	@Override
 	public Integer getUserIdRedis(String token) {
 		Integer userId = redisDao.getUserId(token);
 		return userId;
