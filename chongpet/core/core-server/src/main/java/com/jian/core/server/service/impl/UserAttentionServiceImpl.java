@@ -225,4 +225,18 @@ public class UserAttentionServiceImpl implements UserAttentionService {
 		}
 		return attentionList;
 	}
+
+    @Override
+    public Set<Object> getAttention(int userId) {
+        Set<Object> UserIds = new HashSet<>();
+        UserIds =redisUtil2.getFollowRange(userId,0,-1);
+        return UserIds;
+    }
+
+    @Override
+    public Set<Object> getUserFans(int userId) {
+        Set<Object> UserIds = new HashSet<>();
+        UserIds=redisUtil2.getFansRange(userId,0,-1);
+        return UserIds;
+    }
 }
