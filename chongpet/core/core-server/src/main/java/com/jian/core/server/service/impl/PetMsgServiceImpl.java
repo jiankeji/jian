@@ -28,6 +28,7 @@ public class PetMsgServiceImpl implements PetMsgService {
 
     @Override
     public PetMsg getPetMsg(int userId, int petId) {
-        return null;
+        PetMsg petMsg = petMsgRedisDao.getRedisPetMsg(userId,petId);
+        return petMsg;
     }
 }
