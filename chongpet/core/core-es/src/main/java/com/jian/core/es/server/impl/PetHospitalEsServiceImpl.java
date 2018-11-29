@@ -9,6 +9,7 @@ import com.jian.core.model.util.DistanceUtil;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
@@ -40,8 +41,12 @@ public class PetHospitalEsServiceImpl implements PetHospitalEsService {
     }
 
     @Override
-    public List<HomePetHospitalBo> getHomePetHopsptialAll(int pageSize, int pageNum, double lat, double lon) {
+    public List<HomePetHospitalBo> getHomePetHopsptialAll(int pageNum , int pageSize , double lat, double lon,String context) {
         List<HomePetHospitalBo> homePetHospitalBos = new ArrayList<>();
+
+        //模糊查询
+        BoolQueryBuilder wBuilder = QueryBuilders.boolQuery();
+            wBuilder.must(QueryBuilders.matchQuery("shopName", context).minimumShouldMatch("100%"));
 
         //搜索在100KM范围内的数据
         GeoDistanceQueryBuilder builder = QueryBuilders.geoDistanceQuery("shopPosition").point(lat, lon)
@@ -54,10 +59,13 @@ public class PetHospitalEsServiceImpl implements PetHospitalEsService {
 
 
         //queryForList默认是分页，走的是queryForPage，默认10个
-        Pageable pageable = new PageRequest(pageSize, pageNum);
+        Pageable pageable = new PageRequest(pageSize,pageNum);
 
         NativeSearchQueryBuilder builder1 =
                 new NativeSearchQueryBuilder();
+        if (context !=null && !"".equals(context)){
+            builder1.withQuery(wBuilder);
+        }
         builder1.withSort(sortBuilder);
         builder1.withPageable((org.springframework.data.domain.Pageable) pageable);
         SearchQuery searchQuery = builder1.build();
@@ -87,4 +95,5 @@ public class PetHospitalEsServiceImpl implements PetHospitalEsService {
         }
         return homePetHospitalBos;
     }
+
 }

@@ -14,8 +14,9 @@ public interface PetHospitalEsService {
     void  PetHospitalEsSave(PetHospital petHospital);
 
     /**
-     * TODO 查询首页宠物医院分页
+     * TODO 查询首页宠物医院分页(首页和搜索通用)
      * @return list
      */
-    List<HomePetHospitalBo> getHomePetHopsptialAll(int pageSize, int pageNum, double lat, double lon);
+    List<HomePetHospitalBo> getHomePetHopsptialAll( int pageNum,int pageSize, double lat, double lon,String context);
+
 }

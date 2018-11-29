@@ -100,26 +100,6 @@ public class StringUtil<T> {
         return sBuffer.toString();
     }
 
-
-    /**
-     * 验证list是否需要翻页
-     * @param list
-     * @return
-     */
-    public boolean flagIfNextPage(List<T> list, int pageOfCount){
-        if (list != null && list.size()>0){
-            if (list.size() == pageOfCount) {
-                list.remove(list.size()-1);
-                return true;
-            }else {
-                return false;
-            }
-        }
-        return false;
-    }
-
-
-
     /**
      * 判断Integer 是否符合规则
      * @param num

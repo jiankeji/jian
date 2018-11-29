@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jian.core.server.dao.UserAttentionDao">
+  <resultMap id="BaseResultMap" type="com.jian.core.model.bean.UserAttention">
+    <id column="sid" jdbcType="INTEGER" property="sid" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="follow_user_id" jdbcType="INTEGER" property="followUserId" />
+    <result column="add_date" jdbcType="TIMESTAMP" property="addDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sid, user_id, follow_user_id, add_date
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from t_user_attention where sid = #{sid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByAttention" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_attention
+    where
+      (user_id = #{userId,jdbcType=INTEGER} and follow_user_id = #{followUserId,jdbcType=INTEGER})
+    or
+      (user_id = #{followUserId,jdbcType=INTEGER} and follow_user_id = #{userId,jdbcType=INTEGER})
+  </select>
+
+  <select id="getFollow" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*) from t_user_attention where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getFans" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*) from t_user_attention where follow_user_id = #{userId,jdbcType=INTEGER}
+  </select>
+
+  <select id="isFollow" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*) from t_user_attention where user_id = #{userId,jdbcType=INTEGER} and follow_user_id = #{followUserId,jdbcType=INTEGER}
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_user_attention where sid = #{sid,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="sid" parameterType="com.jian.core.model.bean.UserAttention">
+    insert into t_user_attention (sid,user_id,follow_user_id,add_date) values (#{sid,jdbcType=INTEGER},#{userId,jdbcType=INTEGER},#{followUserId,jdbcType=INTEGER},#{addDate,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.jian.core.model.bean.UserAttention">
+    update t_user_attention
+    set user_id = #{userId,jdbcType=INTEGER},
+      follow_user_id = #{followUserId,jdbcType=INTEGER},
+      add_date = #{addDate,jdbcType=TIMESTAMP}
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+</mapper>

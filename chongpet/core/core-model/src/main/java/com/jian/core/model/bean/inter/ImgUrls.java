@@ -6,4 +6,6 @@ public interface ImgUrls {
     final static String DYNAMIC = "dynamic";
 
     final static String PATH = "path";
+
+    final static String HADE_IMG_URL_PATH="head_img_url";
 }

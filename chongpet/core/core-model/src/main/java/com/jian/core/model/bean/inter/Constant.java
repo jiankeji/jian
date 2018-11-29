@@ -18,4 +18,9 @@ public interface Constant {
     final static String REDIS_HOME_DYNAMIC="userDynanic:";
     /**redis 用户动态点赞目录*/
     final static String REDIS_HOME_DYNAMIC_LIKE="userDynanicLike:";
+
+    /**用户信息*/
+    final static String REDIS_VALID_USER_KEY ="usersmap";
+
+    final static String REDIS_PET_MSG_MAP_KEY = "pet_msg_map_key";
 }

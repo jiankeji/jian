@@ -5,9 +5,12 @@ import com.alibaba.fastjson.JSON;
 import com.jian.core.model.bean.User;
 import com.jian.core.redis.util.RedisUtil;
 import com.jian.core.server.redisDao.UserRedisDao;
+import org.springframework.stereotype.Component;
+
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
+@Component
 public class UserRedisDaoMapper implements UserRedisDao {
 
     @Resource
