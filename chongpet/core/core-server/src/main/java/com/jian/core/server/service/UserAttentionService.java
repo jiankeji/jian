@@ -5,6 +5,7 @@ import com.jian.core.model.bean.UserAttention;
 import com.jian.core.model.bo.UserAttentionBo;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserAttentionService {
     UserAttention selectByPrimaryKey(Integer sid);
@@ -26,4 +27,18 @@ public interface UserAttentionService {
     List<UserAttentionBo> getAttentionList(Integer userId, Integer type, long start, long end);
 
     List<UserAttentionBo> getUserFansList(int LogigUserId, int fromUserId, long start, long end, int type);
+
+    /**
+     * 获取用户关注
+     * @param userId
+     * @return
+     */
+    Set<Object> getAttention(int userId);
+
+    /**
+     * 获取用户粉丝
+     * @param userId
+     * @return
+     */
+    Set<Object> getUserFans(int userId);
 }
