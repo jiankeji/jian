@@ -16,6 +16,7 @@ public interface BannerDao  {
      * @param type
      * @return
      */
-    @Select("select "+RESULT+" from where b_type = #{type,jdbcType = INTEGER} and isstatus = 0 order by sort_num asc,sid desc ")
+    @Select("select "+RESULT+" from t_banner" +
+            " where b_type = #{type,jdbcType = INTEGER} and isstatus = 0 order by sort_num asc,sid desc ")
     List<Banner> getBannerAll(@Param(value = "type") int type);
 }

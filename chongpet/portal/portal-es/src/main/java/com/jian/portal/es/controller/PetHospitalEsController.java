@@ -41,7 +41,7 @@ public class PetHospitalEsController {
 
     @PostMapping(value="/search",produces="application/json; charset=UTF-8")
     @ApiOperation(value="宠物医院搜索/快速挂号", notes="宠物医院搜索/快速挂号", response=ResultVo.class,position=1)
-    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
+    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=HomePetHospitalBo.class),
             @ApiResponse(code=API_EXCEPTION,message="操作异常"),  @ApiResponse(code=API_PARAMS_ERROR,message="获取参数错误")})
     public ResultVo<List<HomePetHospitalBo>> getHomePage(HttpServletRequest request, @ApiParam(value = "页码",required = true)@RequestParam(value = "pageNum",required = true)int pageNum,
                                                          @ApiParam(value = "每页条数",required = true)@RequestParam(value = "pageSize",required = true)int pagesize,

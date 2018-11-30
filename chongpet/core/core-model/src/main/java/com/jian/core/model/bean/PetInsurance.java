@@ -21,8 +21,8 @@ public class PetInsurance {
     @ApiModelProperty(value = "保险内容",dataType = "String")
     private String context;
 
-    @ApiModelProperty(value = "价格",dataType = "float")
-    private float price;
+    @ApiModelProperty(value = "价格",dataType = "double")
+    private double price;
 
     @ApiModelProperty(value = "状态",dataType = "int")
     private int isstatus;
@@ -62,11 +62,11 @@ public class PetInsurance {
         this.context = context;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

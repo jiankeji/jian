@@ -83,7 +83,7 @@ public class DateTimeUtil {
      * @return
      */
     public static String formatDateToString(Date dateTime){
-    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		return dateFormat.format(dateTime);
     }
 
@@ -106,6 +106,12 @@ public class DateTimeUtil {
 			log.error("formatDateToString操作异常,没有明确给出要转换的日期格式",e);
 			return "";
 		}
+    }
+
+    public static long getFromatTime() throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date currentTime_2 = formatter.parse(formatter.format(new Date()));
+        return currentTime_2.getTime();
     }
 
     /**
@@ -188,10 +194,6 @@ public class DateTimeUtil {
 		return "";
 	}
 
-    public static void main(String args[]) throws Exception{
-
-	}
-
     // 根据日期时间字符串计算其与当前时间的间隔，精确到分钟60 0,小时60/60 1,天60/60/24 2 传时间戳，字符串都行
 	public static long countTimeSpace(String dateTime,int type){
 		if(StringUtil.isEmpty(dateTime)) return -1;
@@ -267,4 +269,8 @@ public class DateTimeUtil {
         hour = (time / (60 * 60 * 1000) - day * 24);
         return hour;
     }
+
+	public static void main(String[] args) throws ParseException {
+        System.out.println(DateTimeUtil.getFromatTime());
+	}
 }

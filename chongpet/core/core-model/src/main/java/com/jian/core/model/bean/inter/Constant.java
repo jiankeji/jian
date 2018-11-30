@@ -23,4 +23,13 @@ public interface Constant {
     final static String REDIS_VALID_USER_KEY ="usersmap";
 
     final static String REDIS_PET_MSG_MAP_KEY = "pet_msg_map_key";
+
+    /**宠物标签*/
+    final static String REDIS_PET_LABLE_MSG_MAP_KEY="pet_lable_msg_map";
+
+    /**宠物头条*/
+    final static String REDIS_PET_NEWS_MAP_KEY = "pet_news_map";
+
+    /**宠物头条*/
+    final static String REDIS_PET_NEWS_ZSET_KEY = "pet_news_zset";
 }

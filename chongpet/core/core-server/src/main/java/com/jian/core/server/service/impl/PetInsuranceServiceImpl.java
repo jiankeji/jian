@@ -30,4 +30,10 @@ public class PetInsuranceServiceImpl implements PetInsuranceService {
     public List<PetInsuranceBo> getHomeInsuranceAll(int pageSize,int pageNum) {
         return petInsuranceRedisDao.getRedisInsurance(pageSize,pageNum);
     }
+
+    @Override
+    public void saveInsurance() {
+        List<PetInsurance> list = petInsuranceDao.getPetinsuranceAll();
+        petInsuranceRedisDao.saveHomeInsurance(list);
+    }
 }

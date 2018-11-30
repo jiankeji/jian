@@ -24,8 +24,14 @@ public class PetMsg {
     @ApiModelProperty(value = "宠物生日时间戳",dataType = "long")
     private long petBirthday;
 
+    @ApiModelProperty(value = "宠物签名",dataType = "long")
+    private String petSignautre;
+
     @ApiModelProperty(value = "创建时间戳",dataType = "long")
     private long petCreateTime;
+
+    @ApiModelProperty(value = "状态",dataType = "int")
+    private int isstatus;
 
 
     public int getSid() {
@@ -82,5 +88,21 @@ public class PetMsg {
 
     public void setPetCreateTime(long petCreateTime) {
         this.petCreateTime = petCreateTime;
+    }
+
+    public String getPetSignautre() {
+        return petSignautre;
+    }
+
+    public void setPetSignautre(String petSignautre) {
+        this.petSignautre = petSignautre;
+    }
+
+    public int getIsstatus() {
+        return isstatus;
+    }
+
+    public void setIsstatus(int isstatus) {
+        this.isstatus = isstatus;
     }
 }

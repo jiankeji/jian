@@ -19,4 +19,6 @@ public interface PetInsuranceService {
      * @return
      */
     List<PetInsuranceBo> getHomeInsuranceAll(int pageSize,int pageNum);
+
+    void saveInsurance();
 }

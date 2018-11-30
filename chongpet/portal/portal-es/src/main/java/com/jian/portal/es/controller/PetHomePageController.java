@@ -2,29 +2,26 @@ package com.jian.portal.es.controller;
 
 import com.jian.core.es.server.PetHospitalEsService;
 import com.jian.core.model.bean.PetHospital;
-import com.jian.core.model.bo.HomeBannerBo;
-import com.jian.core.model.bo.HomePageBo;
-import com.jian.core.model.bo.HomePetHospitalBo;
-import com.jian.core.model.bo.PetInsuranceBo;
+import com.jian.core.model.bo.*;
 import com.jian.core.model.obj.ResultVo;
 import com.jian.core.model.util.ResultUtil;
 import com.jian.core.server.service.BannerService;
 import com.jian.core.server.service.PetInsuranceService;
+import com.jian.core.server.service.PetNewsService;
 import io.swagger.annotations.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.jian.core.model.ResC.*;
 
+@SuppressWarnings("ALL")
 @RestController
 @RequestMapping(value = "apil/homePage")
 @Api(value = "api1/homePage",description = "首页")
@@ -40,9 +37,12 @@ public class PetHomePageController {
     @Autowired
     private BannerService bannerService;
 
+    @Autowired
+    private PetNewsService petNewsService;
+
     @PostMapping(value="/getHomePage",produces="application/json; charset=UTF-8")
     @ApiOperation(value="获取首页信息", notes="获取首页信息", response=ResultVo.class,position=1)
-    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
+    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=HomePageBo.class),
             @ApiResponse(code=API_EXCEPTION,message="操作异常"), @ApiResponse(code=API_PARAMS_ERROR,message="获取参数错误")})
     public ResultVo<HomePageBo> getHomePage(HttpServletRequest request, @ApiParam(value = "页码",required = true)@RequestParam(value = "pageNum",required = true)int pageNum,
                                                   @ApiParam(value = "每页条数",required = true)@RequestParam(value = "pageSize",required = true)int pagesize,
@@ -61,6 +61,10 @@ public class PetHomePageController {
             List<HomeBannerBo> homeBannerBos =bannerService.getHomePageBannerAll();
             homePageBo.setHomeBannerList(homeBannerBos);
 
+            //宠物头条
+            List<PetHomeFrontPageBo> homeFrontPageBos =petNewsService.getRedisPetNews();
+            homePageBo.setPetHomeFrontPageBoList(homeFrontPageBos);
+
             //首页保险信息
             List<PetInsuranceBo> petInsuranceBos = petInsuranceService.getHomeInsuranceAll(0,3);
             homePageBo.setPetInsuranceList(petInsuranceBos);
@@ -74,5 +78,10 @@ public class PetHomePageController {
             log.error("【首页内容获取失败】",e);
             return ResultUtil.setResultVoDesc(resultVo,API_EXCEPTION);
         }
+    }
+
+    @GetMapping(value="/setbanner",produces="application/json; charset=UTF-8")
+    public void setbanner() throws ParseException {
+        bannerService.setBanner(1);
     }
 }

@@ -11,11 +11,9 @@ import io.swagger.annotations.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 import static com.jian.core.model.ResC.API_EXCEPTION;
@@ -35,8 +33,8 @@ public class PetInsuranceController {
     private BannerService bannerService;
 
     @PostMapping(value="/getInsurancePage",produces="application/json; charset=UTF-8")
-    @ApiOperation(value="获取保险信息", notes="获取保险信息", response=ResultVo.class,position=1)
-    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
+    @ApiOperation(value="获取保险首页信息", notes="获取保险首页信息", response=ResultVo.class,position=1)
+    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=PetInsurancePageBo.class),
             @ApiResponse(code=API_EXCEPTION,message="操作异常"), @ApiResponse(code=API_PARAMS_ERROR,message="获取参数错误")})
     public ResultVo<PetInsurancePageBo> getInsurancePage(@ApiParam(value = "页码",required = true)@RequestParam(value = "pageNum",required = true)int pageNum,
                                                          @ApiParam(value = "每页条数",required = true)@RequestParam(value = "pageSize",required = true)int pagesize){
@@ -60,5 +58,10 @@ public class PetInsuranceController {
             log.error("【保险页内容获取失败】",e);
             return ResultUtil.setResultVoDesc(resultVo,API_EXCEPTION);
         }
+    }
+
+    @GetMapping(value="/setInsuranc",produces="application/json; charset=UTF-8")
+    public void setInsuranc() throws ParseException {
+        petInsuranceService.saveInsurance();
     }
 }

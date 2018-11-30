@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.jian.core.model.bean.inter.ImgUrls.IMGSRC;
+import static com.jian.core.model.bean.inter.ImgUrls.PATH;
 
 @Component
 public class ImgUtil {
@@ -27,7 +28,7 @@ public class ImgUtil {
             if (imgName.indexOf("http://")!=-1 || imgName.indexOf("https://")!=-1){
                 return imgName;
             }
-            String imgSrc = PropertiesUtil.getProperty(IMGSRC);
+            String imgSrc = PropertiesUtil.getProperty(PATH);
             String headImgPath = PropertiesUtil.getProperty(imgPath);
             if (headImgPath.length()==0||imgSrc.length()==0) {
                 log.error("getImgPath操作：从sysconfig.properties配置文件中读取"+imgName+"的值失败");

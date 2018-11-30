@@ -1,6 +1,5 @@
 package com.jian.core.model.bo;
 
-import com.jian.core.model.bean.PetInsurance;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -12,6 +11,9 @@ public class HomePageBo {
 
     @ApiModelProperty(value = "首页banner",dataType = "list")
     List<HomeBannerBo> homeBannerList = new ArrayList<>();
+
+    @ApiModelProperty(value = "首页宠派头条",dataType = "list")
+    List<PetHomeFrontPageBo> petHomeFrontPageBoList = new ArrayList<>();
 
     @ApiModelProperty(value = "首页保险",dataType = "list")
     List<PetInsuranceBo> petInsuranceList = new ArrayList<>();
@@ -42,5 +44,13 @@ public class HomePageBo {
 
     public void setHomeBannerList(List<HomeBannerBo> homeBannerList) {
         this.homeBannerList = homeBannerList;
+    }
+
+    public List<PetHomeFrontPageBo> getPetHomeFrontPageBoList() {
+        return petHomeFrontPageBoList;
+    }
+
+    public void setPetHomeFrontPageBoList(List<PetHomeFrontPageBo> petHomeFrontPageBoList) {
+        this.petHomeFrontPageBoList = petHomeFrontPageBoList;
     }
 }
