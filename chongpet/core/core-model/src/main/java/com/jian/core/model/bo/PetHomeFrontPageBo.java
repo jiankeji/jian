@@ -13,7 +13,7 @@ public class PetHomeFrontPageBo {
     private String title;
 
     @ApiModelProperty(value = "新闻图片",dataType = "String")
-    private String newsImgUrl;
+    private String newsPic;
 
     public int getSid() {
         return sid;
@@ -31,11 +31,11 @@ public class PetHomeFrontPageBo {
         this.title = title;
     }
 
-    public String getNewsImgUrl() {
-        return newsImgUrl;
+    public String getNewsPic() {
+        return newsPic;
     }
 
-    public void setNewsImgUrl(String newsImgUrl) {
-        this.newsImgUrl = newsImgUrl;
+    public void setNewsPic(String newsPic) {
+        this.newsPic = newsPic;
     }
 }

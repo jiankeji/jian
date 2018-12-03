@@ -61,26 +61,26 @@ public class PetNewsController {
         }
     }
 
-    @GetMapping(value="/saveNews",produces="application/json; charset=UTF-8")
-    public void saveNews() {
-        List<PetNews> list = petNewsService.getAll();
-        for (PetNews p:list) {
-            petNewsEsService.saveNews(p);
-        }
-    }
-
-    @GetMapping(value="/setNews",produces="application/json; charset=UTF-8")
-    public void setNews() throws ParseException {
-        PetNews p1 =petNewsEsService.getNews(1);
-        p1.setCreateTime(new Date());
-        PetNews p2 = petNewsEsService.getNews(2);
-        p2.setCreateTime(new Date());
-        PetNews p3 = petNewsEsService.getNews(3);
-        p2.setCreateTime(new Date());
-        List<PetNews> list = new ArrayList<>();
-        list.add(p1);
-        list.add(p2);
-        list.add(p3);
-        petNewsService.saveRedisPetNew(JSON.toJSONString(list));
-    }
+//    @GetMapping(value="/saveNews",produces="application/json; charset=UTF-8")
+//    public void saveNews() {
+//        List<PetNews> list = petNewsService.getAll();
+//        for (PetNews p:list) {
+//            petNewsEsService.saveNews(p);
+//        }
+//    }
+//
+//    @GetMapping(value="/setNews",produces="application/json; charset=UTF-8")
+//    public void setNews() throws ParseException {
+//        PetNews p1 =petNewsEsService.getNews(1);
+//        p1.setCreateTime(new Date());
+//        PetNews p2 = petNewsEsService.getNews(2);
+//        p2.setCreateTime(new Date());
+//        PetNews p3 = petNewsEsService.getNews(3);
+//        p2.setCreateTime(new Date());
+//        List<PetNews> list = new ArrayList<>();
+//        list.add(p1);
+//        list.add(p2);
+//        list.add(p3);
+//        petNewsService.saveRedisPetNew(JSON.toJSONString(list));
+//    }
 }

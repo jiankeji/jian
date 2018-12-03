@@ -80,8 +80,8 @@ public class PetHomePageController {
         }
     }
 
-    @GetMapping(value="/setbanner",produces="application/json; charset=UTF-8")
-    public void setbanner() throws ParseException {
-        bannerService.setBanner(1);
-    }
+//    @GetMapping(value="/setbanner",produces="application/json; charset=UTF-8")
+//    public void setbanner() throws ParseException {
+//        bannerService.setBanner(1);
+//    }
 }

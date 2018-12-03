@@ -59,7 +59,7 @@ public class PetHospitalEsServiceImpl implements PetHospitalEsService {
 
 
         //queryForList默认是分页，走的是queryForPage，默认10个
-        Pageable pageable = new PageRequest(pageSize,pageNum);
+        Pageable pageable = new PageRequest(pageNum,pageSize);
 
         NativeSearchQueryBuilder builder1 =
                 new NativeSearchQueryBuilder();

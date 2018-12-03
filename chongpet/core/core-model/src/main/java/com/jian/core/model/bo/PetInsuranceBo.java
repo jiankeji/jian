@@ -1,7 +1,10 @@
 package com.jian.core.model.bo;
 
+import com.jian.core.model.util.ImgUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import static com.jian.core.model.bean.inter.ImgUrls.INSURANCE_PHOTO_PATH;
 
 @ApiModel(description = "首页宠物保险")
 public class PetInsuranceBo {
@@ -30,6 +33,9 @@ public class PetInsuranceBo {
     }
 
     public String getImgUrl() {
+        if (imgUrl.indexOf("https://") == -1 || imgUrl.indexOf("http://") == -1){
+            return ImgUtil.getImgPath(imgUrl,INSURANCE_PHOTO_PATH);
+        }
         return imgUrl;
     }
 

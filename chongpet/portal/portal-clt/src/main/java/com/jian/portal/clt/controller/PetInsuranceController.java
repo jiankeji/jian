@@ -60,8 +60,8 @@ public class PetInsuranceController {
         }
     }
 
-    @GetMapping(value="/setInsuranc",produces="application/json; charset=UTF-8")
-    public void setInsuranc() throws ParseException {
-        petInsuranceService.saveInsurance();
-    }
+//    @GetMapping(value="/setInsuranc",produces="application/json; charset=UTF-8")
+//    public void setInsuranc() throws ParseException {
+//        petInsuranceService.saveInsurance();
+//    }
 }

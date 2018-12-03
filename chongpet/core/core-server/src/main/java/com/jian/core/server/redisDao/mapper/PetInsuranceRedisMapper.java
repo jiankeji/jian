@@ -40,8 +40,8 @@ public class PetInsuranceRedisMapper implements PetInsuranceRedisDao{
     public List<PetInsuranceBo> getRedisInsurance(int pageSize, int pageNum) {
         List<PetInsuranceBo> petInsuranceBos = new ArrayList<>();
         Set<Object> set = new HashSet<>();
-        set = redisUtil.zRange(REDIS_HOME_INSURANCE_ZSET_KEY, pageNum,pageSize);
-        if (set.size() < 0) {
+        set = redisUtil.zRange(REDIS_HOME_INSURANCE_ZSET_KEY, pageSize,pageNum);
+        if (set.size() > 0) {
             for (Object ins : set) {
                 PetInsuranceBo petInsuranceBo = JSON.parseObject(redisUtil.getHashValue(REDIS_HOME_INSURANCE_KEY, (String) ins), PetInsuranceBo.class);
                 petInsuranceBos.add(petInsuranceBo);
@@ -52,6 +52,7 @@ public class PetInsuranceRedisMapper implements PetInsuranceRedisDao{
 
     private void setRedis(List<PetInsurance> petInsurances){
         for (PetInsurance petInsurance:petInsurances){
+            System.out.println(JSON.toJSONString(petInsurance));
             PetInsuranceBo petInsuranceBo = JSON.parseObject(JSON.toJSONString(petInsurance),PetInsuranceBo.class);
             redisUtil.setHashValue(REDIS_HOME_INSURANCE_KEY,String.valueOf(petInsurance.getSid()),JSON.toJSONString(petInsuranceBo));
             redisUtil.zAdd(REDIS_HOME_INSURANCE_ZSET_KEY,String.valueOf(petInsurance.getSid()),petInsurance.getSortNum());
