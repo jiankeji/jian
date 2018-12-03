@@ -22,7 +22,11 @@ public interface Constant {
     /**用户信息*/
     final static String REDIS_VALID_USER_KEY ="usersmap";
 
+
+    /**用户宠物信息资料*/
     final static String REDIS_PET_MSG_MAP_KEY = "pet_msg_map_key";
+    /**用户宠物顺序*/
+    final static String REDIS_PET_MSG_ZSET_KEY = "pet_msg_zset_key";
 
     /**宠物标签*/
     final static String REDIS_PET_LABLE_MSG_MAP_KEY="pet_lable_msg_map";
@@ -42,4 +46,10 @@ public interface Constant {
     final static String REDIS_HOME_DYNAMIC_COMMENT="userComment:";
     /**redis 用户动态回复*/
     final static String REDIS_HOME_DYNAMIC_REPLY="userReply:";
+
+    /**活动*/
+    final static String REDIS_ACTIVITY_MSG_KEY = "activity_msg";
+
+    /**活动顺序*/
+    final static String REDIS_ACTIVITY_MSG_ZSET_KEY = "activity_msg_zset";
 }
