@@ -3,6 +3,7 @@ package com.jian.core.server.service.impl;
 import com.jian.core.model.bean.User;
 import com.jian.core.model.util.Mdfive;
 import com.jian.core.model.util.MyRandom;
+import com.jian.core.model.util.PropertiesUtil;
 import com.jian.core.redis.util.RedisUtil;
 import com.jian.core.server.dao.LoginDao;
 import com.jian.core.server.redisDao.UserRedisDao;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+
+import static com.jian.core.model.bean.inter.ImgUrls.HADE_IMG_URL_PATH;
+import static com.jian.core.model.bean.inter.ImgUrls.PATH;
 
 
 /**
@@ -74,7 +78,8 @@ public class LoginServiceImpl implements LoginService {
 		User user;
 		try {
 			user = loginDao.selectUserAllByPhone(phoneNumber);
-
+			String path = PropertiesUtil.getProperty(PATH)+user.getPhoto();
+			user.setPhoto(path);
 			if (user.getWxopenid()==null)user.setWxopenid("");
 			if (user.getBirthday()==null) user.setBirthday(0L);
 			if (user.getCity()==null)user.setCity("");
@@ -105,6 +110,7 @@ public class LoginServiceImpl implements LoginService {
 		user.setCreateTime(System.currentTimeMillis());
 		user.setUpdateTime(System.currentTimeMillis());
 		String photo = loginDao.getdefaultphoto(MyRandom.getRandom());
+		photo = PropertiesUtil.getProperty(HADE_IMG_URL_PATH)+photo;
 		user.setFans(0);
 		user.setStatus(0);
 		user.setUsable(0);

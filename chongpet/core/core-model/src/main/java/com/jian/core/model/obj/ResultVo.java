@@ -3,6 +3,8 @@ package com.jian.core.model.obj;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
+
 /**
  * 返回前端的结果信息代码和描述以及数据
  * @ClassName ResultVo
@@ -12,7 +14,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @version 1.0.0
  */
 @ApiModel(value="返回前端的结果信息代码和描述以及数据")
-	public class ResultVo<T> {
+	public class ResultVo<T> implements Serializable {
 		public ResultVo(T obj){
 			this.obj=obj;
 		}

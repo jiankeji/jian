@@ -46,7 +46,10 @@ public class LoginController {
 		}
 		String isUser = loginService.isUserByPhone(phoneNumber);
 		if("true".equals(isUser)){
-			return ResultUtil.setResultVoDesc(result,API_PHONE_EXIT);
+			result.setObj("true");
+		}
+		if ("false".equals(isUser)){
+			result.setObj("false");
 		}
 		return ResultUtil.setResultVoDesc(result,API_SUCCESS);
 	}
@@ -148,7 +151,7 @@ public class LoginController {
 			@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
 			@ApiResponse(code=API_PARAMS_ERROR,message="参数错误，请确认在输入"),
 			@ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入")})
-	@ApiImplicitParam(paramType = "query",name = "phoneNumber",value = "手机号",dataType = "String",required = true)
+	@ApiImplicitParam(paramType = "query",name = "code",value = "手机号",dataType = "String",required = true)
 	public ResultVo<Integer> isVerity(HttpServletRequest request, @RequestParam String code) {
 		ResultVo<Integer> result = new ResultVo<>(-1);
 		String codes = (String) request.getSession().getAttribute("code");
@@ -182,7 +185,7 @@ public class LoginController {
 	})
 	public ResultVo<Map<String,String>> register(HttpServletRequest request,@RequestParam  String phoneNumber,
 												 @RequestParam String password,@RequestParam Integer phoneType,
-												 @RequestParam Integer loginType,@RequestParam Integer userId) {
+												 @RequestParam Integer loginType,@RequestParam(required = false) Integer userId) {
 		User user = new User();
 		user.setPhoneNumber(phoneNumber);
 		user.setPassword(password);

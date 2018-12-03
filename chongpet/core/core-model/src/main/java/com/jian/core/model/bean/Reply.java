@@ -1,11 +1,13 @@
 package com.jian.core.model.bean;
 
+import java.io.Serializable;
+
 /**
  * 用户动态回复  实体类
  * @author shen
  *
  */
-public class Reply {
+public class Reply implements Serializable {
 
 	
 	//回复id

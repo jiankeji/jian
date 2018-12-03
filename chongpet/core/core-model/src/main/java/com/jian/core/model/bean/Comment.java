@@ -18,6 +18,9 @@ public class Comment {
 	//用户发布的动态id
 	@ApiModelProperty(value = "用户发布的动态id",dataType = "int")
 	private Integer dynamicId;
+
+	@ApiModelProperty(value = "评论点赞数",dataType = "int")
+	private  Integer likeNum;
 	//作者id
 	@ApiModelProperty(value = "作者id",dataType = "int")
 	private Integer toUserId;
@@ -46,6 +49,13 @@ public class Comment {
     @ApiModelProperty(value = "评论的回复集合",dataType = "List<Reply>")
 	private List<Reply> replyList;
 
+	public Integer getLikeNum() {
+		return likeNum;
+	}
+
+	public void setLikeNum(Integer likeNum) {
+		this.likeNum = likeNum;
+	}
 	public Integer getCommentId() {
 		return commentId;
 	}

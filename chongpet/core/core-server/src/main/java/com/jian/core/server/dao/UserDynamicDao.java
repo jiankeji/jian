@@ -19,7 +19,7 @@ public interface UserDynamicDao {
 	//发动态
 	int addDynamic(Dynamic dynamic);
 	//添加动态图片
-	int addDynamicImg(@Param("paths") String paths, @Param("dynamicId") Integer dynamicId);
+	int addDynamicImg(Img img);
 	//查看是否点赞
 	int selectLikeStatus(@Param("dynamicId") Integer dynamicId, @Param("userId") Integer userId);
 	//点赞 改状态
@@ -33,6 +33,8 @@ public interface UserDynamicDao {
 
 	//查询动态 分页
 	List<Dynamic> showDynamic();
+	//查询个人动态 分页
+	List<Dynamic> showDynamicByUserId(Integer userId);
 	//根据动态id查询评论
 	List<Comment> selectCommentbyDMC(Integer dynamicId);
 	//根据评论id查询回复
@@ -63,7 +65,21 @@ public interface UserDynamicDao {
 	int deleteDynamicById(Integer dynamicId);
 	//删除动态图片
 	int deleteImgById(Integer imgId);
-	
+
+	//查看用户是否给评论点赞 0未点赞 1已点赞
+	int getCommentLikeStatus(@Param("commentId") Integer commentId, @Param("userId") Integer userId);
+
+	//评论点赞
+	int saveCommentLike(@Param("commentId") Integer commentId, @Param("userId") Integer userId,@Param("status") Integer status);
+
+	//点赞 取消赞  （以前点过赞的）
+	int updateCommentLike(@Param("commentId") Integer commentId, @Param("userId") Integer userId,@Param("status") Integer status);
+
+	//更新评论点赞数
+	int updateCommentLikenum(@Param("commentId") Integer commentId,@Param("likenum") Integer likenum);
+
+	//获取当前评论的动态id
+	int getDynamicIdByCommentId(Integer commentId);
 }
 
 

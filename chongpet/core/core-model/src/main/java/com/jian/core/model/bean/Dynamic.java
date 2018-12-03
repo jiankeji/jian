@@ -1,5 +1,6 @@
 package com.jian.core.model.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * @author shen
  *
  */
-public class Dynamic {
+public class Dynamic implements Serializable {
 	
 	//用户发布的动态id
 	private Integer dynamicId;

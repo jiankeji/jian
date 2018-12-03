@@ -3,7 +3,7 @@
 <mapper namespace="com.jian.core.server.dao.LoginDao">
 	
 	<resultMap type="com.jian.core.model.bean.User" id="jian">
-		<id column="u_id" property="userId" jdbcType="INTEGER"/>
+		<id column="sid" property="userId" jdbcType="INTEGER"/>
 		<result column="u_name" property="name" jdbcType="VARCHAR"/>
 		<result column="u_phoneNumber" property="phoneNumber" jdbcType="VARCHAR"/>
 		<result column="u_sex" property="sex" jdbcType="VARCHAR"/>
@@ -32,7 +32,7 @@
 	</select>
 	
 	<select id="selectUserAllByPhone" parameterType="java.lang.String" resultMap="jian">
-		select u_id,u_name,u_phoneNumber,u_sex,u_birthday,u_city,u_explain,u_photo,u_updateTime,u_createTime,u_fans,
+		select sid,u_name,u_phoneNumber,u_sex,u_birthday,u_city,u_explain,u_photo,u_updateTime,u_createTime,u_fans,
 		      u_wxopenid,u_payid,u_qqid,u_push,u_status,u_phoneType,u_usable
 		from user
 		where u_phoneNumber=#{phoneNumber}
@@ -139,7 +139,7 @@
 				u_usable=#{usable},
 			</if>
 		</set>
-		where u_id=#{userId}
+		where sid=#{userId}
 	</update>
 
 </mapper>

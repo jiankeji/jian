@@ -32,4 +32,14 @@ public interface Constant {
 
     /**宠物头条*/
     final static String REDIS_PET_NEWS_ZSET_KEY = "pet_news_zset";
+
+    /**redis 用户动态关注目录*/
+    final static String REDIS_HOME_DYNAMIC_ATTENTION="userDynanicAttention:";
+
+    /**redis 用户动态排序目录 根据时间*/
+    final static String REDIS_HOME_DYNAMIC_TIME="userDynamicTime:";
+    /**redis 用户动态评论*/
+    final static String REDIS_HOME_DYNAMIC_COMMENT="userComment:";
+    /**redis 用户动态回复*/
+    final static String REDIS_HOME_DYNAMIC_REPLY="userReply:";
 }

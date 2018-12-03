@@ -128,6 +128,7 @@ public  class RedisUtil1 {
         return (obj == null) ? "" : String.valueOf ( hash.get(key,field) );
     }
 
+
     /**
      *添加map
      * @param key
@@ -217,9 +218,19 @@ public  class RedisUtil1 {
      * @param l
      * @param value
      */
-    public  void delList(String key , long l, Object value){
+    public void delList(String key , long l, Object value){
         ListOperations<String, Object> list = redisTemplate.opsForList();
         list.remove ( key,l,value);
+    }
+
+    /**
+     *删除列表以外的所有元素
+     * @param key
+     * @param start
+     * @param end
+     */
+    public void listTrim(String key,long start,long end){
+        redisTemplate.opsForList().trim(key, start, end);
     }
 
     /**

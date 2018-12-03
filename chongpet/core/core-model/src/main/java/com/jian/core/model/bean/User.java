@@ -1,6 +1,8 @@
 package com.jian.core.model.bean;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
 
 	//用户id

@@ -20,7 +20,7 @@ public class UserRedisDaoMapper implements UserRedisDao {
     public void saveReidsUser(User user, String token) {
 
         redisUtil.set("token:"+token,user.getUserId()+"",3l, TimeUnit.DAYS);
-        redisUtil.setHashValue("usersmap",user.getUserId()+"", JSON.toJSONString(user));
+        redisUtil.setHashValue("usermap",user.getUserId()+"", JSON.toJSONString(user));
 
     }
 
