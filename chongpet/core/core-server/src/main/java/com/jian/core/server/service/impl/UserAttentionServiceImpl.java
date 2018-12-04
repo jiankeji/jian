@@ -12,6 +12,7 @@ import com.jian.core.server.service.LoginService;
 import com.jian.core.server.service.UserAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -21,6 +22,7 @@ import static com.jian.core.model.bean.inter.ImgUrls.HADE_IMG_URL_PATH;
 
 @SuppressWarnings("ALL")
 @Component
+@Transactional
 public class UserAttentionServiceImpl implements UserAttentionService {
 	@Autowired
 	private UserAttentionDao userAttentionDao;

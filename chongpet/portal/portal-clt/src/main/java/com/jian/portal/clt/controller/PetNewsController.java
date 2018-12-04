@@ -5,8 +5,10 @@ import com.jian.core.es.server.PetNewsEsService;
 import com.jian.core.model.bean.PetNews;
 import com.jian.core.model.bo.PetFrontPageBo;
 import com.jian.core.model.bo.PetFrontPageListBo;
+import com.jian.core.model.bo.PetNewsBo;
 import com.jian.core.model.obj.ResultVo;
 import com.jian.core.model.util.ResultUtil;
+import com.jian.core.server.dao.PetNewsDao;
 import com.jian.core.server.service.LoginService;
 import com.jian.core.server.service.PetNewsService;
 import io.swagger.annotations.*;
@@ -46,19 +48,45 @@ public class PetNewsController {
     @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=PetFrontPageBo.class),
             @ApiResponse(code=API_EXCEPTION,message="操作异常"), @ApiResponse(code=API_PARAMS_ERROR,message="获取参数错误")})
     public ResultVo<List<PetFrontPageBo>> getFrontPage(HttpServletRequest request, @ApiParam(value = "页码",required = true)@RequestParam(value = "pageNum",required = true)int pageNum,
-                                                           @ApiParam(value = "每页条数",required = true)@RequestParam(value = "pageSize",required = true)int pagesize){
+                                                           @ApiParam(value = "每页条数",required = true)@RequestParam(value = "pageSize",required = true)int pageSize){
         ResultVo<List<PetFrontPageBo>> resultVo = new ResultVo<>(new ArrayList<>());
-        pagesize = pageNum<0?0:pageNum*pagesize-1;
-        pageNum =(pageNum-1)*pagesize;
+        pageSize = pageNum<0?0:pageNum*pageSize-1;
+        pageNum =(pageNum-1)*pageSize;
 
         try {
-            List<PetFrontPageBo> listBos = petNewsService.getFrontPageBo(pagesize,pageNum);
+            List<PetFrontPageBo> listBos = petNewsService.getFrontPageBo(pageSize,pageNum);
             resultVo.setObj(listBos);
             return  ResultUtil.setResultVoDesc(resultVo,API_SUCCESS);
         }catch (Exception e){
             log.error("【宠物头条获取异常】",e);
             return ResultUtil.setResultVoDesc(resultVo,API_EXCEPTION);
         }
+    }
+
+    @PostMapping(value="/getPetNewsMsg",produces="application/json; charset=UTF-8")
+    @ApiOperation(value="查看宠物新闻详情", notes="查看宠物新闻详情", response=ResultVo.class,position=1)
+    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=PetNewsBo.class),
+            @ApiResponse(code=API_EXCEPTION,message="操作异常"), @ApiResponse(code=API_PARAMS_ERROR,message="获取参数错误")})
+    public ResultVo<PetNewsBo> getPetNewsMsg(HttpServletRequest request, @ApiParam(value = "新闻ID",required = true)@RequestParam(value = "newId",required = true)int newId){
+
+        ResultVo<PetNewsBo> resultVo = new ResultVo<>(new PetNewsBo());
+        try {
+            PetNews petNews = petNewsEsService.getNews(newId);
+            //计算浏览次数
+            petNews.setPageView(petNews.getPageView()+1);
+            petNewsEsService.saveNews(petNews);
+            //获取的内容插入到bo模版中
+            if (petNews != null){
+                PetNewsBo bo = JSON.parseObject(JSON.toJSONString(petNews),PetNewsBo.class);
+                //这边还要插入评论回复的内容
+                resultVo.setObj(bo);
+                return ResultUtil.setResultVoDesc(resultVo,API_SUCCESS);
+            }
+        }catch (Exception e){
+            log.error("【查询新闻详情内容失败】",e);
+            return  ResultUtil.setResultVoDesc(resultVo,API_EXCEPTION);
+        }
+        return ResultUtil.setResultVoDesc(resultVo,API_SUCCESS);
     }
 
 //    @GetMapping(value="/saveNews",produces="application/json; charset=UTF-8")

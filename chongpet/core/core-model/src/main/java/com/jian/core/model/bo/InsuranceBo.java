@@ -1,12 +1,10 @@
-package com.jian.core.model.bean;
+package com.jian.core.model.bo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.Date;
-
-@ApiModel(description = "宠物保险基础信息model")
-public class PetInsurance {
+@ApiModel(description = "宠物保险基础信息")
+public class InsuranceBo {
 
     @ApiModelProperty(value = "保险Id",dataType = "int")
     private int sid;
@@ -26,12 +24,6 @@ public class PetInsurance {
     @ApiModelProperty(value = "价格",dataType = "double")
     private double price;
 
-    @ApiModelProperty(value = "状态",dataType = "int")
-    private int isstatus;
-
-    @ApiModelProperty(value = "排序",dataType = "int")
-    private int sortNum;
-
     @ApiModelProperty(value = "保障时间--按天算",dataType = "int")
     private int guaranteeTime;
 
@@ -46,12 +38,6 @@ public class PetInsurance {
 
     @ApiModelProperty(value = "理赔服务",dataType = "String")
     private String serve;//理赔服务
-
-    @ApiModelProperty(value = "创建时间",dataType = "Date")
-    private Date createTime;
-
-    @ApiModelProperty(value = "更新时间",dataType = "Date")
-    private Date updateTime;
 
     public int getSid() {
         return sid;
@@ -77,6 +63,14 @@ public class PetInsurance {
         this.title = title;
     }
 
+    public String getSubcontext() {
+        return subcontext;
+    }
+
+    public void setSubcontext(String subcontext) {
+        this.subcontext = subcontext;
+    }
+
     public String getContext() {
         return context;
     }
@@ -91,30 +85,6 @@ public class PetInsurance {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public String getSubcontext() {
-        return subcontext;
-    }
-
-    public void setSubcontext(String subcontext) {
-        this.subcontext = subcontext;
-    }
-
-    public int getIsstatus() {
-        return isstatus;
-    }
-
-    public void setIsstatus(int isstatus) {
-        this.isstatus = isstatus;
-    }
-
-    public int getSortNum() {
-        return sortNum;
-    }
-
-    public void setSortNum(int sortNum) {
-        this.sortNum = sortNum;
     }
 
     public int getGuaranteeTime() {
@@ -155,42 +125,5 @@ public class PetInsurance {
 
     public void setServe(String serve) {
         this.serve = serve;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "PetInsurance{" +
-                "sid=" + sid +
-                ", imgUrl='" + imgUrl + '\'' +
-                ", title='" + title + '\'' +
-                ", subcontext='" + subcontext + '\'' +
-                ", context='" + context + '\'' +
-                ", price=" + price +
-                ", isstatus=" + isstatus +
-                ", sortNum=" + sortNum +
-                ", guaranteeTime=" + guaranteeTime +
-                ", featureImgUrl='" + featureImgUrl + '\'' +
-                ", information='" + information + '\'' +
-                ", products='" + products + '\'' +
-                ", serve='" + serve + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
     }
 }
