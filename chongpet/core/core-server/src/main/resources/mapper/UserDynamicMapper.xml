@@ -135,7 +135,7 @@
 		insert into comment
 		(cmt_userdmc_id,cmt_u_id,cmt_u_ids,cmt_content,cmt_time,cmt_likenum)
 		values
-		(#{dynamicId},#{toUserId},#{fromUserId},#{commentContent},#{commentTime},#{likenum})
+		(#{dynamicId},#{toUserId},#{fromUserId},#{commentContent},#{commentTime},#{likeNum})
 	</insert>
 	
 	<insert id="reply" parameterType="com.jian.core.model.bean.Reply" keyProperty="replyId" useGeneratedKeys="true">
@@ -150,7 +150,7 @@
 		from reply
 		where sid=#{replyId}
 		AND reply_u_id=#{userId}
-		union all
+		union
 		select sid
 		from reply
 		where sid=#{replyId}
@@ -166,7 +166,7 @@
 		from comment
 		where sid=#{commentId}
 		AND cmt_u_id=#{userId}
-		union all
+		union
 		select sid
 		from comment
 		where sid=#{commentId}

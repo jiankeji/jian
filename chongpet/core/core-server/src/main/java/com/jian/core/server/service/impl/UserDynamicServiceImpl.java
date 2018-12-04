@@ -187,10 +187,11 @@ public class UserDynamicServiceImpl implements UserDynamicService {
 				userDynamicDao.deleteReply(reply.getReplyId());
 			}
 			userDynamicDao.deleteComment(commentId);
+			userDynamicRedisDao.deleteComment(commentId,dynamicId);
 		} catch (Exception e) {
 			status = 203;
 		}
-		userDynamicRedisDao.deleteComment(commentId,dynamicId);
+
 		return status;
 	}
 
