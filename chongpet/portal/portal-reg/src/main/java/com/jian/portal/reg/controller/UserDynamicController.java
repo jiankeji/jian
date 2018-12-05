@@ -48,16 +48,16 @@ public class UserDynamicController {
     @Token
     @PostMapping(value="/publish",headers = "content-type=multipart/form-data",consumes="multipart/*")
     @ApiOperation(value="上传动态", notes="上传动态", response= ResultVo.class,position=1)
-    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
-            @ApiResponse(code=API_EXCEPTION,message="操作异常"),
-            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入")})
+    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=String.class),
+            @ApiResponse(code=API_EXCEPTION,message="操作异常",response=String.class),
+            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入",response=String.class)})
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "content",value = "标题 内容",dataType = "String",required = true),
             @ApiImplicitParam(paramType = "header",name = "token",value = "token",dataType = "String",required = true)
     })
-    public ResultVo<Integer> publish(HttpServletRequest request,
+    public ResultVo<String> publish(HttpServletRequest request,
                                    @ApiParam (value = "文件",required =true)@RequestParam(value = "file",required = true) MultipartFile [] file, @RequestParam String content) {
-        ResultVo<Integer> result = new ResultVo(-1);
+        ResultVo<String> result = new ResultVo("");
         String token = request.getHeader("token");
         if(file.length==0 || file==null) {
             return ResultUtil.setResultVoDesc(result,API_PARAMS_FORMAT_ERROR);
@@ -102,16 +102,16 @@ public class UserDynamicController {
     @Token
     @PostMapping(value="/likeOrCancel",produces = "application/json; charset=UTF-8")
     @ApiOperation(value="点赞 取消赞", notes="上传动态", response= ResultVo.class,position=1)
-    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
-            @ApiResponse(code=API_EXCEPTION,message="操作异常"),
-            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入")})
+    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=String.class),
+            @ApiResponse(code=API_EXCEPTION,message="操作异常",response=String.class),
+            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入",response=String.class)})
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "dynamicId",value = "动态id",dataType = "int",required = true),
             @ApiImplicitParam(paramType = "query",name = "userId",value = "点赞的人id",dataType = "int",required = true),
             @ApiImplicitParam(paramType = "header",name = "token",value = "token",dataType = "String",required = true)
     })
-    public ResultVo<Integer> likeOrCancel(@RequestParam Integer dynamicId,@RequestParam Integer userId) {
-        ResultVo<Integer> result = new ResultVo<>(-1);
+    public ResultVo<String> likeOrCancel(@RequestParam Integer dynamicId,@RequestParam Integer userId) {
+        ResultVo<String> result = new ResultVo<>("");
         if(dynamicId==null || dynamicId<=0) {
             return ResultUtil.setResultVoDesc(result,API_PARAMS_FORMAT_ERROR);
         }
@@ -131,8 +131,8 @@ public class UserDynamicController {
     @Token
     @PostMapping(value="/showDynamic",produces = "application/json; charset=UTF-8")
     @ApiOperation(value="显示动态", notes="显示动态", response= ResultVo.class,position=1)
-    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
-            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入")})
+    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=List.class),
+            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入",response=List.class)})
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "pageSize",value = "一页个数",dataType = "int",required = true),
             @ApiImplicitParam(paramType = "query",name = "pageNum",value = "第几页",dataType = "int",required = true),
@@ -172,17 +172,17 @@ public class UserDynamicController {
     @Token
     @PostMapping(value="/comment",produces = "application/json; charset=UTF-8")
     @ApiOperation(value="评论", notes="评论", response= ResultVo.class,position=1)
-    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
-            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入")})
+    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=String.class),
+            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入",response=String.class)})
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "toUserId",value = "动态作者id",dataType = "int",required = true),
             @ApiImplicitParam(paramType = "query",name = "dynamicId",value = "动态id",dataType = "int",required = true),
             @ApiImplicitParam(paramType = "query",name = "commentContent",value = "评论内容",dataType = "String",required = true),
             @ApiImplicitParam(paramType = "header",name = "token",value = "token",dataType = "String",required = true)
     })
-    public ResultVo<Integer> comment(HttpServletRequest request,@RequestParam  Integer toUserId,@RequestParam Integer dynamicId,
+    public ResultVo<String> comment(HttpServletRequest request,@RequestParam  Integer toUserId,@RequestParam Integer dynamicId,
                                      @RequestParam String commentContent) {
-        ResultVo<Integer>  result  = new ResultVo<>(-1);
+        ResultVo<String>  result  = new ResultVo<>("");
         Comment comment = new Comment();
         comment.setCommentContent(commentContent);
         comment.setDynamicId(dynamicId);
@@ -207,16 +207,16 @@ public class UserDynamicController {
     @Token
     @PostMapping(value="/reply",produces = "application/json; charset=UTF-8")
     @ApiOperation(value="回复", notes="回复", response= ResultVo.class,position=1)
-    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
-            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入")})
+    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=String.class),
+            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入",response=String.class)})
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "toUserId",value = "被回复者id",dataType = "int",required = true),
             @ApiImplicitParam(paramType = "query",name = "commentId",value = "评论id",dataType = "int",required = true),
             @ApiImplicitParam(paramType = "query",name = "replyContent",value = "回复内容",dataType = "String",required = true),
             @ApiImplicitParam(paramType = "header",name = "token",value = "token",dataType = "String",required = true)
     })
-    public ResultVo<Integer> reply(HttpServletRequest request,@RequestParam  Integer toUserId,@RequestParam Integer commentId,@RequestParam String replyContent) {
-        ResultVo<Integer> result  = new ResultVo<>(-1);
+    public ResultVo<String> reply(HttpServletRequest request,@RequestParam  Integer toUserId,@RequestParam Integer commentId,@RequestParam String replyContent) {
+        ResultVo<String> result  = new ResultVo<>("");
 
         Reply reply = new Reply();
         reply.setCommentId(commentId);
@@ -243,16 +243,16 @@ public class UserDynamicController {
     @Token
     @PostMapping(value = "/deleteReply",produces = "application/json; charset=utf-8")
     @ApiOperation(value="删除回复", notes="删除回复", response= ResultVo.class,position=1)
-    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
-            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入"),
-            @ApiResponse(code=API_USER_NOT_POWER,message="您没有权限")})
+    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=String.class),
+            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入",response=String.class),
+            @ApiResponse(code=API_USER_NOT_POWER,message="您没有权限",response=String.class)})
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "commentId",value = "评论id",dataType = "int",required = true),
             @ApiImplicitParam(paramType = "query",name = "replyId",value = "回复id",dataType = "int",required = true),
             @ApiImplicitParam(paramType = "header",name = "token",value = "token",dataType = "String",required = true)
     })
-    public ResultVo<Integer> deleteReply(HttpServletRequest request,@RequestParam  Integer replyId,@RequestParam  Integer commentId) {
-        ResultVo<Integer>  result  = new ResultVo<>(-1);
+    public ResultVo<String> deleteReply(HttpServletRequest request,@RequestParam  Integer replyId,@RequestParam  Integer commentId) {
+        ResultVo<String>  result  = new ResultVo<>("");
         String token = request.getHeader("token");
         if(replyId<=0 || replyId==null) {
             return ResultUtil.setResultVoDesc(result,API_PARAMS_FORMAT_ERROR);
@@ -277,16 +277,16 @@ public class UserDynamicController {
     @Token
     @PostMapping(value = "/deleteComment",produces = "application/json; charset=utf-8")
     @ApiOperation(value="删除评论", notes="删除评论", response= ResultVo.class,position=1)
-    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
-            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入"),
-            @ApiResponse(code=API_USER_NOT_POWER,message="您没有权限")})
+    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=String.class),
+            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入",response=String.class),
+            @ApiResponse(code=API_USER_NOT_POWER,message="您没有权限",response=String.class)})
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "commentId",value = "评论id",dataType = "int",required = true),
             @ApiImplicitParam(paramType = "query",name = "dynamicId",value = "动态id",dataType = "int",required = true),
             @ApiImplicitParam(paramType = "header",name = "token",value = "token",dataType = "String",required = true)
     })
-    public ResultVo<Integer> deleteComment(HttpServletRequest request,@RequestParam  Integer commentId,@RequestParam  Integer dynamicId) {
-        ResultVo<Integer> result  = new ResultVo<>(-1);
+    public ResultVo<String> deleteComment(HttpServletRequest request,@RequestParam  Integer commentId,@RequestParam  Integer dynamicId) {
+        ResultVo<String> result  = new ResultVo<>("");
         String token = request.getHeader("token");
         if(commentId==null || commentId<=0) {
             return ResultUtil.setResultVoDesc(result,API_PARAMS_FORMAT_ERROR);
@@ -308,15 +308,15 @@ public class UserDynamicController {
     @Token
     @PostMapping(value = "/deleteDynamic",produces = "application/json; charset=utf-8")
     @ApiOperation(value="删除动态", notes="删除动态", response= ResultVo.class,position=1)
-    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
-            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入"),
-            @ApiResponse(code=API_USER_NOT_POWER,message="您没有权限")})
+    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=String.class),
+            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入",response=String.class),
+            @ApiResponse(code=API_USER_NOT_POWER,message="您没有权限",response=String.class)})
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "dynamicId",value = "动态id",dataType = "int",required = true),
             @ApiImplicitParam(paramType = "header",name = "token",value = "token",dataType = "String",required = true)
     })
-    public ResultVo<Integer> deleteDynamic(HttpServletRequest request,@RequestParam  Integer dynamicId) {
-        ResultVo<Integer> result = new ResultVo<>(-1);
+    public ResultVo<String> deleteDynamic(HttpServletRequest request,@RequestParam  Integer dynamicId) {
+        ResultVo<String> result = new ResultVo<>("");
         String token = request.getHeader("token");
         if(dynamicId == null || dynamicId<=0) {
             return ResultUtil.setResultVoDesc(result,API_PARAMS_FORMAT_ERROR);
@@ -333,8 +333,8 @@ public class UserDynamicController {
     @Token
     @PostMapping(value = "/browse",produces = "application/json; charset=utf-8")
     @ApiOperation(value="浏览动态", notes="浏览动态", response= ResultVo.class,position=1)
-    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
-            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入")})
+    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=String.class),
+            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入",response=String.class)})
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "dynamicId",value = "动态id",dataType = "int",required = true),
             @ApiImplicitParam(paramType = "header",name = "token",value = "token",dataType = "String",required = true)
@@ -350,9 +350,9 @@ public class UserDynamicController {
 
     @Token
     @PostMapping(value = "/commentLike",produces = "application/json; charset=utf-8")
-    @ApiOperation(value="动态评论点赞 取赞", notes="动态评论点赞 取赞", response= ResultVo.class,position=1)
-    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=ResultVo.class),
-            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入")})
+    @ApiOperation(value="动态的评论点赞 取赞", notes="动态的评论点赞 取赞", response= ResultVo.class,position=1)
+    @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=String.class),
+            @ApiResponse(code=API_PARAMS_FORMAT_ERROR,message="参数格式不正确，请重新输入",response=String.class)})
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "commentId",value = "评论id",dataType = "int",required = true),
             @ApiImplicitParam(paramType = "header",name = "token",value = "token",dataType = "String",required = true)
