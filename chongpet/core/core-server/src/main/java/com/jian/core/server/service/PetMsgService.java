@@ -4,6 +4,7 @@ import com.jian.core.model.bean.PetLable;
 import com.jian.core.model.bean.PetMsg;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PetMsgService {
 
@@ -16,4 +17,6 @@ public interface PetMsgService {
     public void setReidsPetLable(String lable, int petId);
 
     public List<PetLable> getRedisPetLable(int petId);
+
+    Set<Object> petMsgZset(int userId);
 }

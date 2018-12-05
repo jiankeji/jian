@@ -4,6 +4,7 @@ import com.jian.core.model.bean.PetLable;
 import com.jian.core.model.bean.PetMsg;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PetMsgRedisDao {
 

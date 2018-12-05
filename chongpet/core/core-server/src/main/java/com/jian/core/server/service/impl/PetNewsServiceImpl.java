@@ -10,6 +10,7 @@ import com.jian.core.server.redisDao.PetNewsRedisDao;
 import com.jian.core.server.service.PetNewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.Set;
 import static com.jian.core.model.bean.inter.Constant.REDIS_PET_NEWS_MAP_KEY;
 @SuppressWarnings("ALL")
 @Component
+@Transactional
 public class PetNewsServiceImpl implements PetNewsService {
 
     @Autowired

@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description = "宠物信息model")
 public class PetMsg {
 
-    @ApiModelProperty(value = "用户Id",dataType = "int")
+    @ApiModelProperty(value = "宠物Id",dataType = "int")
     private int sid;
 
     @ApiModelProperty(value = "宠物昵称",dataType = "String")

@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.jian.core.model.bean.inter.Constant.REDIS_PET_LABLE_MSG_MAP_KEY;
 import static com.jian.core.model.bean.inter.Constant.REDIS_PET_MSG_MAP_KEY;
+import static com.jian.core.model.bean.inter.Constant.REDIS_PET_MSG_ZSET_KEY;
 
 @Component
 public class PetMsgRedisMapper implements PetMsgRedisDao{
@@ -23,6 +24,7 @@ public class PetMsgRedisMapper implements PetMsgRedisDao{
     @Override
     public void setRedisPetMsg(PetMsg petMsg,int userId) {
         redisUtil.setHashValue(REDIS_PET_MSG_MAP_KEY+":"+userId,petMsg.getSid()+"", JSON.toJSONString(petMsg));
+        redisUtil.zAdd(REDIS_PET_MSG_ZSET_KEY+":"+userId,petMsg.getSid()+"",petMsg.getSid());
     }
 
     @Override

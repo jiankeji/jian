@@ -37,11 +37,11 @@ public class PetInsuranceController {
     @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=PetInsurancePageBo.class),
             @ApiResponse(code=API_EXCEPTION,message="操作异常"), @ApiResponse(code=API_PARAMS_ERROR,message="获取参数错误")})
     public ResultVo<PetInsurancePageBo> getInsurancePage(@ApiParam(value = "页码",required = true)@RequestParam(value = "pageNum",required = true)int pageNum,
-                                                         @ApiParam(value = "每页条数",required = true)@RequestParam(value = "pageSize",required = true)int pagesize){
+                                                         @ApiParam(value = "每页条数",required = true)@RequestParam(value = "pageSize",required = true)int pageSize){
         PetInsurancePageBo petInsurancePageBo = new PetInsurancePageBo();
         ResultVo<PetInsurancePageBo> resultVo = new ResultVo<>(petInsurancePageBo);
-        pagesize = pageNum<0?0:pageNum*pagesize-1;
-        pageNum =(pageNum-1)*pagesize;
+        pageSize = pageNum<0?0:pageNum*pageSize-1;
+        pageNum =(pageNum-1)*pageSize;
 
         try {
             //保险页banner   暂时首页和保险页的banner用同一个 不做区分
@@ -49,7 +49,7 @@ public class PetInsuranceController {
             petInsurancePageBo.setHomeBannerList(homeBannerBos);
 
             //保险页保险信息
-            List<PetInsuranceBo> petInsuranceBos = petInsuranceService.getHomeInsuranceAll(pagesize,pageNum);
+            List<PetInsuranceBo> petInsuranceBos = petInsuranceService.getHomeInsuranceAll(pageSize,pageNum);
             petInsurancePageBo.setPetInsuranceList(petInsuranceBos);
 
             resultVo.setObj(petInsurancePageBo);
