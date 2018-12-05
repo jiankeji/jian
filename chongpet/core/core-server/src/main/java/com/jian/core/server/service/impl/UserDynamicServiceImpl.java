@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jian.core.model.bean.inter.ImgUrls.IMGSRC;
+import static com.jian.core.model.bean.inter.ImgUrls.*;
 
 /**
  * 用户动态 评论 回复 点赞 service实现层
@@ -107,14 +107,10 @@ public class UserDynamicServiceImpl implements UserDynamicService {
 	@Override
 	public List<Dynamic> showDynamic(Integer pageNum, Integer pageSize,Integer userId,Integer status) {
 
-	    List<Dynamic> list = userDynamicRedisDao.showDynamic(pageNum,pageSize,userId,status);
+	   /* List<Dynamic> list = userDynamicRedisDao.showDynamic(pageNum,pageSize,userId,status);
 	    if(list!=null&&!list.isEmpty()){
-	    	for(Dynamic d:list){
-				userDynamicDao.browse(d.getDynamicId());
-			}
-
 	    	return  list;
-	    }
+	    }*/
 
 		List<Dynamic> dmcList;
 		if(status==0){
@@ -129,7 +125,11 @@ public class UserDynamicServiceImpl implements UserDynamicService {
 		}
 
 		for(Dynamic dmc:dmcList) {
+			dmc.setPhoto(PropertiesUtil.getProperty(PATH)+PropertiesUtil.getProperty(HADE_IMG_URL_PATH)+dmc.getPhoto());
 			List<Img> imgList = userDynamicDao.selectDMCIMGByDMC(dmc.getDynamicId());
+			for(Img i:imgList){
+				i.setPhoto(PropertiesUtil.getProperty(PATH)+PropertiesUtil.getProperty(DYNAMIC )+i.getPhoto());
+			}
 			dmc.setImgList(imgList);
 			List<Comment> commentList= userDynamicDao.selectCommentbyDMC(dmc.getDynamicId());
 			dmc.setCommentList(commentList);
@@ -198,7 +198,7 @@ public class UserDynamicServiceImpl implements UserDynamicService {
 	@Override
 	public int deleteDynamic(Integer dynamicId, String token) {
 		Integer  userId = userRedisDao.getUserId(token);
-		String imgPath = PropertiesUtil.getProperty(IMGSRC);
+		String imgPath = PropertiesUtil.getProperty(IMGSRC)+PropertiesUtil.getProperty(DYNAMIC);
 		int status;
 		try {
 			status = userDynamicDao.selectDynamicById(dynamicId, userId);

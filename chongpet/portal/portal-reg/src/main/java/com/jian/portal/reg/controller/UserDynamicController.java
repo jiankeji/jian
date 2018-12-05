@@ -79,7 +79,7 @@ public class UserDynamicController {
             try {
                 String imgName =System.currentTimeMillis()+ f.getOriginalFilename();
                 String path = imgPath+imgName;
-                String paths = PropertiesUtil.getProperty(DYNAMIC)+imgName;
+                String paths = imgName;
                 UploadFile.uploadFileUtil(f.getBytes(), imgPath, imgName);
                 PicUtil.compressPhoto(path);
                 Img img = userDynamicService.publishimg(paths, dynamic.getDynamicId());
