@@ -1,6 +1,7 @@
 package com.jian.core.server.dao;
 
 import com.jian.core.model.bean.PetInsurance;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -11,4 +12,7 @@ public interface PetInsuranceDao {
 
     @Select("select "+RESULT+" from t_petInsurance where isstatus=0 order by sort_num asc,sid desc")
     List<PetInsurance> getPetinsuranceAll();
+
+    @Select("select "+RESULT+" FROM t_petInsurance where sid = #{sid,jdbcType = INTEGER}")
+    PetInsurance getInsurance(@Param(value = "sid")int sid);
 }

@@ -83,7 +83,8 @@ public class PetMsgController {
     @PostMapping(value="/getPetMsg",produces="application/json; charset=UTF-8")
     @ApiOperation(value="修改宠物信息获取", notes="修改宠物信息获取", response=ResultVo.class,position=2)
     @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=PetMsg.class),
-            @ApiResponse(code=API_EXCEPTION,message="操作异常"),  @ApiResponse(code=API_ERROR_LOGIN_USER,message="用户未登录")})
+            @ApiResponse(code=API_EXCEPTION,message="操作异常"),@ApiResponse(code = API_ERROR_LOGIN_USER,message = "用户不存在或未登录"),
+            @ApiResponse(code=API_ERROR_LOGIN_USER,message="用户未登录")})
     public ResultVo<PetMsg> getPetMsg(HttpServletRequest request, @ApiParam(value = "宠物ID",required = true)@RequestParam(value = "petId",required = true)int petId) {
 
         ResultVo<PetMsg> resultVo = new ResultVo<>(new PetMsg());
@@ -105,7 +106,8 @@ public class PetMsgController {
     @PostMapping(value="/getPetLable",produces="application/json; charset=UTF-8")
     @ApiOperation(value="宠物标签获取", notes="宠物标签获取", response=ResultVo.class,position=3)
     @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=PetLable.class),
-            @ApiResponse(code=API_EXCEPTION,message="操作异常"),  @ApiResponse(code=API_ERROR_LOGIN_USER,message="用户未登录")})
+            @ApiResponse(code=API_EXCEPTION,message="操作异常"),@ApiResponse(code = API_ERROR_LOGIN_USER,message = "用户不存在或未登录"),
+            @ApiResponse(code=API_ERROR_LOGIN_USER,message="用户未登录")})
     public ResultVo<List<PetLable>> getPetLable(HttpServletRequest request, @ApiParam(value = "宠物ID",required = true)@RequestParam(value = "petId",required = true)int petId) {
         ResultVo<List<PetLable>> resultVo = new ResultVo<>(new ArrayList<>());
         int userId = loginService.getUserIdRedis(request.getHeader("token"));
@@ -125,7 +127,8 @@ public class PetMsgController {
     @PostMapping(value="/savePetLable",produces="application/json; charset=UTF-8")
     @ApiOperation(value="宠物标签保存", notes="宠物标签保存", response=ResultVo.class,position=4)
     @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=Integer.class),
-            @ApiResponse(code=API_EXCEPTION,message="操作异常"),  @ApiResponse(code=API_ERROR_LOGIN_USER,message="用户未登录")})
+            @ApiResponse(code=API_EXCEPTION,message="操作异常"),@ApiResponse(code = API_ERROR_LOGIN_USER,message = "用户不存在或未登录"),
+            @ApiResponse(code=API_ERROR_LOGIN_USER,message="用户未登录")})
     public ResultVo<Integer> getPetLable(HttpServletRequest request, @ApiParam(value = "宠物标签",required = true)@RequestParam(value = "petLable",required = true)String petLables) {
         ResultVo<Integer> resultVo = new ResultVo<>(-1);
         int userId = loginService.getUserIdRedis(request.getHeader("token"));
@@ -144,7 +147,8 @@ public class PetMsgController {
     @PostMapping(value="/getDetails",produces="application/json; charset=UTF-8")
     @ApiOperation(value="宠物详情页", notes="宠物详情页", response=ResultVo.class,position=5)
     @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=PetDetailsBo.class),
-            @ApiResponse(code=API_EXCEPTION,message="操作异常"),  @ApiResponse(code=API_ERROR_LOGIN_USER,message="用户未登录")})
+            @ApiResponse(code=API_EXCEPTION,message="操作异常"), @ApiResponse(code = API_ERROR_LOGIN_USER,message = "用户不存在或未登录"),
+            @ApiResponse(code=API_ERROR_LOGIN_USER,message="用户未登录")})
     public ResultVo<PetDetailsBo> getDetails(HttpServletRequest request, @ApiParam(value = "宠物Id",required = true)@RequestParam(value = "petId",required = true)int petId) {
         ResultVo<PetDetailsBo> resultVo = new ResultVo<>(new PetDetailsBo());
         PetDetailsBo petDetailsBo = new PetDetailsBo();
@@ -183,7 +187,8 @@ public class PetMsgController {
     @PostMapping(value="/getMyPet",produces="application/json; charset=UTF-8")
     @ApiOperation(value="我的宠物", notes="我的宠物", response=ResultVo.class,position=5)
     @ApiResponses({@ApiResponse(code=API_SUCCESS, message="操作成功",response=MyPetListBo.class),
-            @ApiResponse(code=API_EXCEPTION,message="操作异常"),  @ApiResponse(code=API_ERROR_LOGIN_USER,message="用户未登录")})
+            @ApiResponse(code=API_EXCEPTION,message="操作异常"),@ApiResponse(code = API_ERROR_LOGIN_USER,message = "用户不存在或未登录"),
+            @ApiResponse(code=API_ERROR_LOGIN_USER,message="用户未登录")})
     public ResultVo<List<MyPetListBo>> getMyPet(HttpServletRequest request) {
         List<MyPetListBo> list = new ArrayList<>();
         ResultVo<List<MyPetListBo>> resultVo = new ResultVo<>(list);

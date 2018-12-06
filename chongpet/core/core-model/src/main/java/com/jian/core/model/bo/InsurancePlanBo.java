@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @ApiModel(description = "保险计划")
 public class InsurancePlanBo {
@@ -22,24 +24,12 @@ public class InsurancePlanBo {
     private String applyPeople;
 
     /**保障利益*/
-
-    @ApiModelProperty(value = "累计赔偿限额",dataType = "int")
-    private int aggregateAnmtmt;//累计赔付金额
+    @ApiModelProperty(value = "保障利益",dataType = "List")
+    private List<PlanAndGuaranteeBo> planAndGuaranteeBoList = new ArrayList<>();
 
     @ApiModelProperty(value = "保险详情",dataType = "String")
     private String insuranceDetaile;//保险详情
 
-    @ApiModelProperty(value = "每次赔偿限额",dataType = "int")
-    private int everyTimeMoney;//每次赔付金额
-
-    @ApiModelProperty(value = "每次事故财产损失免赔额",dataType = "int")
-    private int everyTimeLoss;//每次损失免赔赔付金额
-
-    @ApiModelProperty(value = "每次事故人身伤害免赔额",dataType = "int")
-    private int everyTimeHurt;//每次伤害免赔
-
-    @ApiModelProperty(value = "生效时间类型 0 次日凌晨生效 1立即生效",dataType = "int")
-    private int takeEffectType;//生效时间类型 0次日凌晨生效  1 立即生效
 
     @ApiModelProperty(value = "价格",dataType = "BigDecimal")
     private BigDecimal price;//decimal  价格
@@ -76,14 +66,6 @@ public class InsurancePlanBo {
         this.applyPeople = applyPeople;
     }
 
-    public int getAggregateAnmtmt() {
-        return aggregateAnmtmt;
-    }
-
-    public void setAggregateAnmtmt(int aggregateAnmtmt) {
-        this.aggregateAnmtmt = aggregateAnmtmt;
-    }
-
     public String getInsuranceDetaile() {
         return insuranceDetaile;
     }
@@ -92,43 +74,19 @@ public class InsurancePlanBo {
         this.insuranceDetaile = insuranceDetaile;
     }
 
-    public int getEveryTimeMoney() {
-        return everyTimeMoney;
-    }
-
-    public void setEveryTimeMoney(int everyTimeMoney) {
-        this.everyTimeMoney = everyTimeMoney;
-    }
-
-    public int getEveryTimeLoss() {
-        return everyTimeLoss;
-    }
-
-    public void setEveryTimeLoss(int everyTimeLoss) {
-        this.everyTimeLoss = everyTimeLoss;
-    }
-
-    public int getEveryTimeHurt() {
-        return everyTimeHurt;
-    }
-
-    public void setEveryTimeHurt(int everyTimeHurt) {
-        this.everyTimeHurt = everyTimeHurt;
-    }
-
-    public int getTakeEffectType() {
-        return takeEffectType;
-    }
-
-    public void setTakeEffectType(int takeEffectType) {
-        this.takeEffectType = takeEffectType;
-    }
-
     public BigDecimal getPrice() {
         return price;
     }
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public List<PlanAndGuaranteeBo> getPlanAndGuaranteeBoList() {
+        return planAndGuaranteeBoList;
+    }
+
+    public void setPlanAndGuaranteeBoList(List<PlanAndGuaranteeBo> planAndGuaranteeBoList) {
+        this.planAndGuaranteeBoList = planAndGuaranteeBoList;
     }
 }

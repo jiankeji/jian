@@ -11,5 +11,6 @@ public interface PetInsuranceRedisDao {
 
     List<PetInsuranceBo> getRedisInsurance(int pageSize,int pageNum);
 
+    String getRedisInsurance(int sid);
 
 }

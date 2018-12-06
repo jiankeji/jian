@@ -3,6 +3,7 @@ package com.jian.core.model.util;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
+import sun.misc.BASE64Decoder;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -152,4 +153,84 @@ public class ImgUtil {
 //        ImgUtil imgUtil = new ImgUtil();
 //        imgUtil.downImg("https://thirdwx.qlogo.cn/mmopen/vi_32/5Ka4Qiax09liaSVStjy1XcRu7Fj05eT9WCRV9wGicPo5K5ds45NmQZt1ibjbNC85M5icgoQtj6BYczZjJvmDZ8WOaGA/132","");
 //    }
+
+
+    /**
+     * @Description 根据base64字符串批量生成图片
+     * @param base64ImgStr base64字符串集合
+     * @param imgPath 图片类型,如：头像图片、相册图片,保单等(从properties中读取)
+     */
+    public static List<String> batchGenerateImg(List<String> base64ImgStr, String imgPath) {
+        List<String> pathList = new ArrayList<>();
+        if (base64ImgStr==null || base64ImgStr.size()==0) return pathList;
+        //根据时间拼图片存储路径
+        Integer yearVal = DateTimeUtil.getDateVal(Calendar.YEAR);
+        Integer monthVal = DateTimeUtil.getDateVal(Calendar.MONTH)+1;
+        Integer dayVal = DateTimeUtil.getDateVal(Calendar.DAY_OF_MONTH);
+        Integer hourVal = DateTimeUtil.getDateVal(Calendar.HOUR_OF_DAY);
+        try {
+            String datePath = yearVal+"/"+monthVal+"/"+dayVal+"/"+hourVal+"/";
+            //图片资源服务器物理地址+图片类型地址+日期
+            String storePath = PropertiesUtil.getProperty(IMGSRC) + PropertiesUtil.getProperty(imgPath) + datePath;
+            //String storePath = config.getImages().getImg_src() + imgPath + datePath;
+            log.info("图片路径："+storePath);
+            log.info("要生成图片数量："+base64ImgStr.size());
+            for(String tmpStr : base64ImgStr) {
+                String fileName = StringUtil.getMD5(DateTimeUtil.getCurrentTimeStamp())+".png";
+                fileName = fileName.toLowerCase();
+                File mfile = new File(storePath);
+                if (!mfile.exists()) {
+                    mfile.mkdirs();
+                }
+                if (generateImage(tmpStr, storePath + fileName)) {
+                    String tmpPathStr = datePath + fileName;
+                    pathList.add(tmpPathStr);
+                    log.info("生成成功:"+fileName);
+                }
+            }
+        } catch (Exception e) {
+            log.error("",e);
+        }
+        return pathList;
+    }
+
+    /**
+     *
+     * @Description 图片base64字符串转图片并存储
+     * @param imgStr base64编码字符串
+     * @param path 图片路径-具体到文件
+     * @return
+     */
+    @SuppressWarnings("restriction")
+    public static boolean generateImage(String imgStr, String path) {
+        if (imgStr == null) {
+            return false;
+        }
+        imgStr = imgStr.replaceAll("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
+        BASE64Decoder decoder = new BASE64Decoder();
+        byte[] b = null;
+        try {
+            b = decoder.decodeBuffer(imgStr);
+            for (int i = 0; i < b.length; ++i) {
+                if (b[i] < 0) {
+                    b[i] += 256;
+                }
+            }
+            // 生成文件
+            System.out.println("-------------------"+path);
+            File imageFile = new File(path);
+            imageFile.createNewFile();
+            if (!imageFile.exists()) {
+                imageFile.createNewFile();
+            }
+            OutputStream imageStream = new FileOutputStream(imageFile);
+            imageStream.write(b);
+            imageStream.flush();
+            imageStream.close();
+            return true;
+        } catch (Exception e) {
+            log.error("generateImage操作异常",e);
+            return false;
+        }
+    }
 }

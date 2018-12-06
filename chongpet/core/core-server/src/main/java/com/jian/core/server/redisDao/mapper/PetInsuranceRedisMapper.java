@@ -50,6 +50,11 @@ public class PetInsuranceRedisMapper implements PetInsuranceRedisDao{
         return petInsuranceBos;
     }
 
+    @Override
+    public String getRedisInsurance(int sid) {
+        return redisUtil.getHashValue(REDIS_HOME_INSURANCE_KEY, sid+"");
+    }
+
     private void setRedis(List<PetInsurance> petInsurances){
         for (PetInsurance petInsurance:petInsurances){
             System.out.println(JSON.toJSONString(petInsurance));

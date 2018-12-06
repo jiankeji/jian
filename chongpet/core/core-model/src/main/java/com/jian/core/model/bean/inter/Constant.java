@@ -52,4 +52,14 @@ public interface Constant {
 
     /**活动顺序*/
     final static String REDIS_ACTIVITY_MSG_ZSET_KEY = "activity_msg_zset";
+
+    /**保险计划*/
+    final static String REDIS_INSURANCE_PLAN_MSG_KEY="insurance_plan_key";
+
+    /**保险计划顺序*/
+    final static String REDIS_INSURANCE_PLAN_ZSET_KEY="insurance_plan_zset";
+
+    /**保险详细信息*/
+    final static String REDIS_INSURANCE_DETAILS_KEY="insurance_details";
+
 }

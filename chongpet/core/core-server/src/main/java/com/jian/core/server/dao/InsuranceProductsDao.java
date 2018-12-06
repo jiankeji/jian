@@ -11,6 +11,9 @@ import java.util.List;
 public interface InsuranceProductsDao {
     final static String RESULT="sid,products_name,products_url,isstatus";
 
+    @Select("select "+RESULT+" from t_insurance_products")
+    List<InsuranceProducts> getProductsAll();
+
     @Select("select "+RESULT+" from t_insurance_products where sid=#{sid,jdbcType=INTEGER}")
-    List<InsuranceProducts> getProductsAll(@Param("sid")int sid);
+    InsuranceProducts getProducts(@Param("sid")int sid);
 }

@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Set;
 
 import static com.jian.core.model.bean.inter.Constant.*;
-import static com.jian.core.model.bean.inter.ImgUrls.DYNAMIC;
-import static com.jian.core.model.bean.inter.ImgUrls.HADE_IMG_URL_PATH;
 import static com.jian.core.model.bean.inter.ImgUrls.PATH;
 
 @Component
@@ -106,9 +104,6 @@ public class UserDynamicRedisDaoMapper implements UserDynamicRedisDao {
 
         Set<Object> set = new HashSet<>();
 
-        String imgurl = PropertiesUtil.getProperty(HADE_IMG_URL_PATH);
-        String p = PropertiesUtil.getProperty(PATH);
-        String dimg = PropertiesUtil.getProperty(DYNAMIC);
         if(status==0){
             set = redisUtil1.reverseRange(REDIS_HOME_DYNAMIC_TIME,before,end);
         }
@@ -123,10 +118,10 @@ public class UserDynamicRedisDaoMapper implements UserDynamicRedisDao {
                 for(Dynamic d:list){
                     User user = userRedisDao.gerUserRedis(d.getUserId());
                     d.setName(user.getName());
-                    d.setPhoto(p+imgurl+user.getPhoto());
-
+                    d.setPhoto(user.getPhoto());
+                    String p = PropertiesUtil.getProperty(PATH);
                     for(Img i:d.getImgList()){
-                        i.setPhoto(p+dimg+i.getPhoto());
+                        i.setPhoto(p+i.getPhoto());
                     }
                     if(redisUtil1.exists(REDIS_HOME_DYNAMIC_COMMENT+d.getDynamicId())) {
                         String dataComment = (String) redisUtil1.get(REDIS_HOME_DYNAMIC_COMMENT + d.getDynamicId());
@@ -159,9 +154,10 @@ public class UserDynamicRedisDaoMapper implements UserDynamicRedisDao {
 
                 User user =  userRedisDao.gerUserRedis(dynamic.getUserId());
                 dynamic.setName(user.getName());
-                dynamic.setPhoto(p+imgurl+user.getPhoto());
+                dynamic.setPhoto(user.getPhoto());
+                String p = PropertiesUtil.getProperty(PATH);
                 for(Img i:dynamic.getImgList()){
-                    i.setPhoto(p+dimg+i.getPhoto());
+                    i.setPhoto(p+i.getPhoto());
                 }
                 if(redisUtil1.exists(REDIS_HOME_DYNAMIC_COMMENT+dynamicId)){
                     String dataComment = (String) redisUtil1.get(REDIS_HOME_DYNAMIC_COMMENT+dynamicId);
