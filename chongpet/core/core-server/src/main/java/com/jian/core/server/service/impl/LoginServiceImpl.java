@@ -3,19 +3,16 @@ package com.jian.core.server.service.impl;
 import com.jian.core.model.bean.User;
 import com.jian.core.model.util.Mdfive;
 import com.jian.core.model.util.MyRandom;
-import com.jian.core.model.util.PropertiesUtil;
 import com.jian.core.redis.util.RedisUtil;
 import com.jian.core.server.dao.LoginDao;
 import com.jian.core.server.redisDao.UserRedisDao;
 import com.jian.core.server.service.LoginService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-
-import static com.jian.core.model.bean.inter.ImgUrls.HADE_IMG_URL_PATH;
-import static com.jian.core.model.bean.inter.ImgUrls.PATH;
 
 
 /**
@@ -78,8 +75,6 @@ public class LoginServiceImpl implements LoginService {
 		User user;
 		try {
 			user = loginDao.selectUserAllByPhone(phoneNumber);
-			String path = PropertiesUtil.getProperty(PATH)+user.getPhoto();
-			user.setPhoto(path);
 			if (user.getWxopenid()==null)user.setWxopenid("");
 			if (user.getBirthday()==null) user.setBirthday(0L);
 			if (user.getCity()==null)user.setCity("");
@@ -99,23 +94,25 @@ public class LoginServiceImpl implements LoginService {
 	public int register(User user,Integer loginType) {
 		String phoneNumber = user.getPhoneNumber();
 		String pwd = Mdfive.md(user.getPassword());
-		if(loginType==1){
-			loginDao.updateUserById(user);
-			return 0;
-		}
 
-		String name = "user"+ phoneNumber.substring(phoneNumber.length()-4, phoneNumber.length());
 		user.setPassword(pwd);
 		user.setSex("female");
 		user.setCreateTime(System.currentTimeMillis());
 		user.setUpdateTime(System.currentTimeMillis());
-		String photo = loginDao.getdefaultphoto(MyRandom.getRandom());
-		photo = PropertiesUtil.getProperty(HADE_IMG_URL_PATH)+photo;
+		Integer number = MyRandom.getRandom();
+		number--;
 		user.setFans(0);
 		user.setStatus(0);
 		user.setUsable(0);
-		user.setName(name);
-		user.setPhoto(photo);
+
+		if(StringUtils.isEmpty(user.getPhoto())){
+			String photo = loginDao.getdefaultphoto(number);
+			user.setPhoto(photo);
+		}
+		if (StringUtils.isEmpty(user.getName())){
+			String name = "user"+ phoneNumber.substring(phoneNumber.length()-4, phoneNumber.length());
+			user.setName(name);
+		}
 
 		loginDao.adduser(user);
 		return 0;
@@ -135,6 +132,37 @@ public class LoginServiceImpl implements LoginService {
 	public Integer getUserIdRedis(String token) {
 		Integer userId = redisDao.getUserId(token);
 		return userId;
+	}
+
+	@Override
+	public String checkPayid(String payid) {
+
+		String phoneNumber = loginDao.checkPayid(payid);
+		boolean flag = 	StringUtils.isEmpty(phoneNumber);
+		if(flag){
+			return "-1";
+		}
+		return phoneNumber;
+	}
+
+	@Override
+	public String checkwxOpenid(String wxopenid) {
+		String phoneNumber = loginDao.checkwxOpenid(wxopenid);
+		boolean flag = 	StringUtils.isEmpty(phoneNumber);
+		if(flag){
+			return "-1";
+		}
+		return phoneNumber;
+	}
+
+	@Override
+	public String checkQQid(String qqid) {
+		String phoneNumber = loginDao.checkQQid(qqid);
+		boolean flag = 	StringUtils.isEmpty(phoneNumber);
+		if(flag){
+			return "-1";
+		}
+		return phoneNumber;
 	}
 
 

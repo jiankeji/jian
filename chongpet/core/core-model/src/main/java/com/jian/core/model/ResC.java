@@ -18,6 +18,12 @@ public final class ResC {
 
     public static final int API_TOKEN_ERROR=600004;//token认证失败
 
+    public static final int API_ALIPAY_NOT_BUOND=600005;//支付宝账号未绑定
+
+    public static final int API_WX_NOT_BUOND=600006;//微信账号未绑定
+
+    public static final int API_QQ_NOT_BUOND=600007;//QQ账号未绑定
+
     /**需要前端弹窗的提示 61开头*/
     /** 手机号错误(位数不够、格式不对)*/
     public static final int API_PHONE_NUM_ERROR = 610001;
@@ -51,5 +57,9 @@ public final class ResC {
     public static final int API_USER_NOT_POWER = 610013;//用户没有权限
 
     public static final int API_SEND_VERITY_ERROR = 610014;//发送验证码失败
+
+    public static final int API_CODE_LOSE=610015;//验证码失效
+
+
 
 }

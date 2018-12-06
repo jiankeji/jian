@@ -27,4 +27,11 @@ public interface LoginService {
 
 	//根据token获取用户id
 	Integer getUserIdRedis(String token);
+
+	//判断支付宝id是否存在
+	String checkPayid(String payid);
+	//判断微信id是否存在
+	String checkwxOpenid(String wxopenid);
+	//判断qq id是否存在
+	String checkQQid(String qqid);
 }

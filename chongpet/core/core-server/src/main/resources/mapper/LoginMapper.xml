@@ -141,7 +141,21 @@
 		</set>
 		where sid=#{userId}
 	</update>
-
+	<select id="checkPayid" parameterType="java.lang.String" resultType="java.lang.String">
+		select u_phoneNumber
+		from user
+		where u_payid=#{payid}
+	</select>
+	<select id="checkwxOpenid" parameterType="java.lang.String" resultType="java.lang.String">
+		select u_phoneNumber
+		from user
+		where u_wxopenid=#{wxopenid}
+	</select>
+	<select id="checkQQid" parameterType="java.lang.String" resultType="java.lang.String">
+		select u_phoneNumber
+		from user
+		where u_qqid=#{qqid}
+	</select>
 </mapper>
 
 

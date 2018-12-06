@@ -23,4 +23,10 @@ public interface LoginDao {
 	int adduser(User user);
 	//根据id修改用户信息
 	void updateUserById(User user);
+	//判断支付宝id是否存在
+	String checkPayid(String payid);
+	//判断微信id是否存在
+	String checkwxOpenid(String wxopenid);
+	//判断qq id是否存在
+	String checkQQid(String qqid);
 }
